@@ -3,3 +3,4 @@
 #define RIGHT_ARROW 77
 #define LEFT_ARROW 75
 #define ESC 27
+#define ENTER 13

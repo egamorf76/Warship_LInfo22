@@ -1,7 +1,25 @@
 #include "../includes/input.h"
 #include "../includes/menu.h"
+#include "math.c"
+#include "string.c"
 #include <stdio.h>
 #include <conio.h>
+#include <string.h>
+
+int printm(int selected) {
+    printf("\e[1;1H\e[2J");
+
+    char messages[2][25] = { "    Commencer", "    Connecter" };
+
+    replace_char(messages[selected], 2, SELECTOR);
+
+    char result[50] = "";
+    for (size_t i = 0; i < 2; i++)
+    {
+        strcat(result, strcat(messages[i], "\n"));
+    }
+    printf(result);
+}
 
 int menu() {
     int selected = 0;
@@ -9,40 +27,28 @@ int menu() {
 
     while (1)
     {
+        printm(selected);
         key = getch();
-        printf("\e[1;1H\e[2J");
 
         switch (key)
         {
             case UP_ARROW:
-                printf("up arrow");
+                selected--;
                 break;
 
             case DOWN_ARROW:
-                printf("down arrow");
+                selected++;
                 break;
             
             case ESC:
                 return -1;
 
+            case ENTER:
+                return selected;
+
             default:
-                printf("unknow key");
                 break;
         }
+        selected = clamp(selected, 0, 1);
     }
-}
-
-char * printm(int selected) {
-    char * messages[2];
-    messages[0] = "   Commencer";
-    messages[1] = "   Connecter";
-
-    messages[selected][1] = SELECTOR;
-
-    char * result = "";
-    for (size_t i = 0; i < 2; i++)
-    {
-        result += strcat(messages[i], "\n");
-    }
-    
 }

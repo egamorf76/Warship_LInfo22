@@ -9,5 +9,7 @@ int main(int argc, char const *argv[])
     scanf("%d", &test);
     printf("status: %d", test);
 
-    menu();
+    int selected_menu = menu();
+
+    printf("Menu: %d", selected_menu);
 }
