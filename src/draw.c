@@ -12,6 +12,7 @@
 // 10 | # # # # # # # # # #
 
 #include "../includes/config.h"
+#include "../includes/vector.h"
 #include "../includes/math.h"
 
 char get_icon(int const status)
@@ -19,8 +20,9 @@ char get_icon(int const status)
     return ICONS[clamp(status + 1, 0, strlen(ICONS) - 1)];
 }
 
-void draw_field(int const field[SIZE][SIZE])
+void draw_field(int const field[SIZE][SIZE], VECTOR pos)
 {
+    printf("\e[1;1H\e[2J");
     printf("   | A B C D E F G H I J\n");
     printf("---|--------------------\n");
 
@@ -36,10 +38,19 @@ void draw_field(int const field[SIZE][SIZE])
         for (int j = 0; j < SIZE; j++)
         {
             char test = get_icon(field[i][j]);
-            printf(" %c", test);
+            printf(" ");
+
+            if ((pos.X) == j && (pos.Y) == i)
+            {
+                printf("\033[37m\033[47m");
+            }
+
+            printf("%c", test);
+
+            printf("\033[0m"); 
         }
 
         printf("\n");
     }
-    
+    printf("\n\nX: %d, Y: %d", pos.X, pos.Y);
 }

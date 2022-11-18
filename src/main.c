@@ -1,9 +1,10 @@
 #include "menu.c"
-#include "draw.c"
+#include "game.c"
+#include "../includes/config.h"
 
 int main(int argc, char const *argv[])
 {
-    int field[10][10] = 
+    int field[SIZE][SIZE] = 
     {
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         { 0, -1, 0, 0, 0, 1, 0, 0, 1, 0},
@@ -17,8 +18,16 @@ int main(int argc, char const *argv[])
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
-    //int id_menu = menu();
+    int id_menu = menu();
 
-    draw_field(field);
+    switch (id_menu)
+    {
+    case START:
+        game_loop(field);
+        break;
+    
+    default:
+        break;
+    }
 
 }
