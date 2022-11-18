@@ -1,15 +1,24 @@
-#include "../includes/status.h"
 #include "menu.c"
-#include <stdlib.h>
+#include "draw.c"
 
 int main(int argc, char const *argv[])
 {
-    int test = HIT;
-    printf("status: %d", test);
-    scanf("%d", &test);
-    printf("status: %d", test);
+    int field[10][10] = 
+    {
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, -1, 0, 0, 0, 1, 0, 0, 1, 0},
+        { 5, 0, 4, 4, 4, 4, 0, 0, 1, 0},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 5, 0, 1, 0, -1, 0, 0, 0, 0, 0},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 3, 0},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 3, 0},
+        { 0, 0, -1, 0, 0, 2, 2, 0, 3, 0},
+        { 0, 3, 3, 3, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
 
-    int selected_menu = menu();
+    //int id_menu = menu();
 
-    printf("Menu: %d", selected_menu);
+    draw_field(field);
+
 }

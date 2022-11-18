@@ -1,3 +1,6 @@
+#ifndef STRING_H
+#define STRING_H
+
 #include <string.h>
 
 void replace_char(char *str, int index, char new) {
@@ -11,3 +14,5 @@ void replace_char(char *str, int index, char new) {
         }
     }
 }
+
+#endif

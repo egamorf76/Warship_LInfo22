@@ -1,13 +1,13 @@
-#include "../includes/input.h"
+#include "../includes/config.h"
 #include "../includes/menu.h"
-#include "math.c"
-#include "string.c"
+#include "../includes/math.h"
+#include "../includes/string.h"
 #include <stdio.h>
 #include <conio.h>
-#include <string.h>
 
 int printm(int selected) {
     printf("\e[1;1H\e[2J");
+    printf("Use UP / DOWN arrows to move, use ENTER to select and ESC to exit :\n\n");
 
     char messages[2][25] = { "    Commencer", "    Connecter" };
 

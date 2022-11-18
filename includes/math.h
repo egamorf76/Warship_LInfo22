@@ -1,4 +1,7 @@
-int clamp(int value, int min, int max) {
+#ifndef MATH_H
+#define MATH_H
+
+int clamp(int value, int min , int max) {
     if (value > max)
     {
         return max;
@@ -11,3 +14,6 @@ int clamp(int value, int min, int max) {
 
     return value;
 }
+#endif
+
+
