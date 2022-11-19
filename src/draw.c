@@ -23,17 +23,18 @@ char get_icon(int const status)
 void draw_field(int const field[SIZE][SIZE], VECTOR pos)
 {
     printf("\e[1;1H\e[2J");
+    printf("Use UP / DOWN / LEFT / RIGHT arrows to move, use ENTER to select and ESC to exit :\n\n");
     printf("   | A B C D E F G H I J\n");
     printf("---|--------------------\n");
 
     for (int i = 0; i < SIZE; i++)
     {
-        if (i <= 9)
+        if (i < 9)
         {
             printf(" ");
         }
 
-        printf("%d |", i);
+        printf("%d |", i + 1);
 
         for (int j = 0; j < SIZE; j++)
         {
@@ -52,5 +53,5 @@ void draw_field(int const field[SIZE][SIZE], VECTOR pos)
 
         printf("\n");
     }
-    printf("\n\nX: %d, Y: %d", pos.X, pos.Y);
+    printf("\n%c%d", ALPHABET[pos.X], pos.Y + 1);
 }

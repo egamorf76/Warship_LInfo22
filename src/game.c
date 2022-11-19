@@ -39,7 +39,7 @@ int game_loop(int field[SIZE][SIZE])
             default:
                 break;
         }
-        selected.X = clamp(selected.X, 0, SIZE);
-        selected.Y = clamp(selected.Y, 0, SIZE);
+        selected.X = clamp(selected.X, 0, SIZE - 1);
+        selected.Y = clamp(selected.Y, 0, SIZE - 1);
     }
 }
