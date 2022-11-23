@@ -11,7 +11,7 @@ int printm(int selected) {
 
     char messages[2][25] = { "    Commencer", "    Connecter" };
 
-    replace_char(messages[selected], 2, SELECTOR);
+    replacechar(messages[selected], 2, SELECTOR);
 
     char result[50] = "";
     for (size_t i = 0; i < 2; i++)

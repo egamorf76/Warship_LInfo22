@@ -3,7 +3,10 @@
 #include "../includes/math.h"
 #include "draw.c"
 
-int game_loop(int field[SIZE][SIZE])
+/// @brief Start gameloop from 2D array
+/// @param field 2D array of the field
+/// @return Return status : -1 = error else ok
+int gameloop(int field[SIZE][SIZE])
 {
     VECTOR selected;
     selected.X = 0;
@@ -12,7 +15,7 @@ int game_loop(int field[SIZE][SIZE])
 
     while (1)
     {
-        draw_field(field, selected);
+        printfield(field, selected);
         key = getch();
 
         switch (key)

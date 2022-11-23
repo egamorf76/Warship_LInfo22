@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
     switch (id_menu)
     {
     case START:
-        game_loop(field);
+        gameloop(field);
         break;
     
     default:
