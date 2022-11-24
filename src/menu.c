@@ -16,7 +16,7 @@ void printm(int selected) {
     replacechar(messages[selected], 2, SELECTOR);
 
     char result[50] = "";
-    for (size_t i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
     {
         strcat(result, strcat(messages[i], "\n"));
     }
