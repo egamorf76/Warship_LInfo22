@@ -6,7 +6,6 @@
 int main(int argc, char const *argv[])
 {
     int field[SIZE][SIZE];
-    int orientation = HORIZONTAL;
     int length = 3;
     buildarrays(field, EMPTY);
 
@@ -15,7 +14,11 @@ int main(int argc, char const *argv[])
     switch (id_menu)
     {
         case START:
-            buildboat(field, selectboat(field, orientation, length));
+            for (int i = 0; i < number_boats; i++) {
+                if (buildboat(field, selectboat(field, HORIZONTAL, boats[i])) == -1) {
+                    return 0;
+                }
+            }
             selectposition(field);
             break;
         
