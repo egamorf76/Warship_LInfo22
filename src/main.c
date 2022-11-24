@@ -21,6 +21,9 @@ int main(int argc, char const *argv[])
             }
             selectposition(field);
             break;
+
+        case CONNECT:
+            break; 
         
         default:
             break;
