@@ -5,8 +5,6 @@
 
 int main(int argc, char const *argv[])
 {
-    // TODO : remake commentary
-
     int field[SIZE][SIZE];
     int orientation = HORIZONTAL;
     int length = 3;

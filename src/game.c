@@ -18,7 +18,7 @@ VECTOR selectposition(int const field[SIZE][SIZE])
     while (1)
     {
         printfield(field, selected);
-        key = getch();
+        key = getch(); //Wait next key pressed
 
         switch (key)
         {
@@ -46,6 +46,7 @@ VECTOR selectposition(int const field[SIZE][SIZE])
             case ENTER:
                 return selected;
         }
+
         selected.X = clamp(selected.X, 0, SIZE - 1);
         selected.Y = clamp(selected.Y, 0, SIZE - 1);
     }
@@ -55,8 +56,8 @@ VECTOR selectposition(int const field[SIZE][SIZE])
 /// @param field 2D array of feild
 /// @param orientation 0 Horizontal and 1 Vertical
 /// @param length Length of the boat
-/// @return Return position to start build boat
-BOAT selectboat(int const field[SIZE][SIZE], int orientation, int const length)
+/// @return Return boat struct
+BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length)
 {
     VECTOR selected;
     selected.X = 0;
@@ -72,63 +73,59 @@ BOAT selectboat(int const field[SIZE][SIZE], int orientation, int const length)
     while (1)
     {
         printfieldboat(field, boat);
-        key = getch();
+        key = getch(); //Wait next key pressed
 
         switch (key)
         {
             case UP_ARROW:
-                selected.Y--;
+                boat.Position.Y--;
                 break;
 
             case DOWN_ARROW:
-                selected.Y++;
+                boat.Position.Y++;
                 break;
 
             case LEFT_ARROW:
-                selected.X--;
+                boat.Position.X--;
                 break;
 
             case RIGHT_ARROW:
-                selected.X++;
+                boat.Position.X++;
                 break;
 
-            case R:
-                if (orientation == HORIZONTAL) {
-                    orientation = VERTICAL;
+            case R: //Change rotation of the boat by ressing R key
+                if (boat.Orientation == HORIZONTAL) {
+                    boat.Orientation = VERTICAL;
                 }
                 else {
-                    orientation = HORIZONTAL;
+                    boat.Orientation = HORIZONTAL;
                 }
                 break;
             
             case ESC:
-                selected.X = -1;
-                selected.Y = -1;
-                boat.Position = selected;
+                boat.Position.X = -1;
+                boat.Position.Y = -1;
                 return boat;
 
             case ENTER:
                 return boat;
         }
 
-        if (orientation == HORIZONTAL) {
-            selected.X = clamp(selected.X, 0, SIZE - 3);
-            selected.Y = clamp(selected.Y, 0, SIZE - 1);
+        //Clamp selected position in terms of the orientation
+        if (boat.Orientation == HORIZONTAL) {
+            boat.Position.X = clamp(boat.Position.X, 0, SIZE - 3);
+            boat.Position.Y = clamp(boat.Position.Y, 0, SIZE - 1);
         }
         else {
-            selected.X = clamp(selected.X, 0, SIZE - 1);
-            selected.Y = clamp(selected.Y, 0, SIZE - 3);
+            boat.Position.X = clamp(boat.Position.X, 0, SIZE - 1);
+            boat.Position.Y = clamp(boat.Position.Y, 0, SIZE - 3);
         }
-        boat.Position = selected;
-        boat.Orientation = orientation;
     }
 }
 
 /// @brief Build the boat on the feild from position, orientation and length
-/// @param field AD array of the feild
-/// @param pos Actual selected position
-/// @param orientation Actual selected orintation
-/// @param length Actual length
+/// @param field 2D array of the feild
+/// @param boat Actual selected boat
 void buildboat(int * field[SIZE][SIZE], BOAT const boat) {
     if (boat.Orientation == HORIZONTAL) {
         for (int i = 0; i < boat.Length; i++) {

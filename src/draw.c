@@ -11,6 +11,7 @@ char geticon(int const status)
     return ICONS[clamp(status + 1, 0, strlen(ICONS) - 1)];
 }
 
+
 /// @brief print header of field
 void printheader() {
     printf("\e[1;1H\e[2J");
@@ -18,6 +19,7 @@ void printheader() {
     printf("   | A B C D E F G H I J\n");
     printf("---|--------------------\n");
 }
+
 
 /// @brief Print of all the field
 /// @param field 2D array of the field
@@ -57,11 +59,10 @@ void printfield(int const field[SIZE][SIZE], VECTOR const pos)
     printf("\n%c%d", ALPHABET[pos.X], pos.Y + 1);
 }
 
+
 /// @brief Draw feild to place boat
 /// @param field 2D array of feild
-/// @param pos Actual selected position
-/// @param orientation Actual selected orientation
-/// @param length Actual length
+/// @param boat Actual selected boat
 void printfieldboat(int const field[SIZE][SIZE], BOAT const boat)
 {
     printheader();
