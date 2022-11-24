@@ -17,7 +17,7 @@ VECTOR selectposition(int const field[SIZE][SIZE])
 
     while (1)
     {
-        printfield(field, selected);
+        printfieldselection(field, selected);
         key = getch(); //Wait next key pressed
 
         switch (key)
@@ -121,41 +121,4 @@ BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const le
             boat.Position.Y = clamp(boat.Position.Y, 0, SIZE - boat.Length);
         }
     }
-}
-
-/// @brief Build the boat on the feild from position, orientation and length
-/// @param field 2D array of the feild
-/// @param boat Actual selected boat
-/// @return Return -1 if error else 0
-int buildboat(int field[SIZE][SIZE], BOAT const boat) {
-    //If exit
-    if (boat.Position.X == -1 && boat.Position.Y == -1) {
-        return -1;
-    }
-    
-    if (boat.Orientation == HORIZONTAL) {
-        for (int i = 0; i < boat.Length; i++) {
-
-            //If Already a boat exist
-            if (field[boat.Position.Y][boat.Position.X + i] == PLACED) {
-                return -1;
-            }
-
-            //Affect status at boat's place
-            field[boat.Position.Y][boat.Position.X + i] = PLACED;
-        }
-    }
-    else {
-        for (int i = 0; i < boat.Length; i++) {
-
-            //If Already a boat exist
-            if (field[boat.Position.Y + i][boat.Position.X] == PLACED) {
-                return -1;
-            }
-
-            //Affect status at boat's place
-            field[boat.Position.Y + i][boat.Position.X] = PLACED;
-        }
-    }
-    return 0;
 }

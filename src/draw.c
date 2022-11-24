@@ -24,7 +24,33 @@ void printheader() {
 /// @brief Print of all the field
 /// @param field 2D array of the field
 /// @param pos Actual selected position
-void printfield(int const field[SIZE][SIZE], VECTOR const pos)
+void printfield(int const field[SIZE][SIZE])
+{
+    printheader();
+
+    for (int i = 0; i < SIZE; i++) {
+        if (i < 9) {
+            printf(" ");
+        }
+
+        // print row number
+        printf("%d |", i + 1); 
+
+        for (int j = 0; j < SIZE; j++) {
+            //print icon
+            printf(" %c", geticon(field[i][j]));
+        }
+
+        //Return line
+        printf("\n");
+    }
+}
+
+
+/// @brief Print of all the field
+/// @param field 2D array of the field
+/// @param pos Actual selected position
+void printfieldselection(int const field[SIZE][SIZE], VECTOR const pos)
 {
     printheader();
 

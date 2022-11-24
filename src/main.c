@@ -1,12 +1,12 @@
 #include "menu.c"
 #include "game.c"
+#include "field.c"
 #include "../includes/config.h"
 #include "../includes/array.h"
 
 int main(int argc, char const *argv[])
 {
     int field[SIZE][SIZE];
-    int length = 3;
     buildarrays(field, EMPTY);
 
     int id_menu = menu();
@@ -14,12 +14,18 @@ int main(int argc, char const *argv[])
     switch (id_menu)
     {
         case START:
+            //For each boats build a new one on the field
             for (int i = 0; i < number_boats; i++) {
-                if (buildboat(field, selectboat(field, HORIZONTAL, boats[i])) == -1) {
-                    return 0;
+                int result = buildboat(field, selectboat(field, HORIZONTAL, boats[i]));
+
+                //If error : retry
+                while (result != 1) 
+                { 
+                    if (result == -1) { return 0; } //Except if exit
+                    result = buildboat(field, selectboat(field, HORIZONTAL, boats[i]));
                 }
             }
-            selectposition(field);
+            printf("\nRes %d", hit(field, selectposition(field)));
             break;
 
         case CONNECT:
@@ -29,4 +35,5 @@ int main(int argc, char const *argv[])
             break;
     }
 
+    printfield(field);
 }

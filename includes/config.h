@@ -9,4 +9,4 @@
 #define R 114
 
 #define ALPHABET "ABCDEFGHIJ"
-#define ICONS "0 @X"
+#define ICONS "@ 0X"

@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <conio.h>
 
-int printm(int selected) {
+/// @brief Print menu at selected point 
+/// @param selected Selected point
+void printm(int selected) {
     printf("\e[1;1H\e[2J");
     printf("Use UP / DOWN arrows to move, use ENTER to select and ESC to exit :\n\n");
 
@@ -21,6 +23,8 @@ int printm(int selected) {
     printf(result);
 }
 
+/// @brief Open menu and return selected
+/// @return Int of menu selected
 int menu() {
     int selected = 0;
     char key;

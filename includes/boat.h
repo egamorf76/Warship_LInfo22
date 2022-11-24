@@ -1,13 +1,13 @@
 #include "../includes/vector.h"
 
-int number_boats = 5;
-int boats[5] = { 2, 3, 3, 4, 5 };
-
 #define HORIZONTAL 0
 #define VERTICAL 1
 
 #ifndef BOAT_H
 #define BOAT_H
+
+int number_boats = 5;
+int boats[5] = { 2, 3, 3, 4, 5 };
 
 /// @brief 2D Vector, Orientation and Length of a boat
 typedef struct {
@@ -38,6 +38,30 @@ int isboatplace(BOAT boat, int x, int y) {
         }
     }
     return 0;
+}
+
+/// @brief Check if a boat already exist on feild
+/// @param field Actual feild
+/// @param boat New boat
+/// @return 1 if no boat else 0
+int isboatexist(int const field[SIZE][SIZE], BOAT const boat) {    
+    if (boat.Orientation == HORIZONTAL) {
+        for (int i = 0; i < boat.Length; i++) {
+            //If Already a boat exist
+            if (field[boat.Position.Y][boat.Position.X + i] == PLACED) {
+                return 0;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < boat.Length; i++) {
+            //If Already a boat exist
+            if (field[boat.Position.Y + i][boat.Position.X] == PLACED) {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 #endif
