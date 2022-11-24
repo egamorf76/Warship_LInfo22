@@ -1,33 +1,26 @@
 #include "menu.c"
 #include "game.c"
 #include "../includes/config.h"
+#include "../includes/array.h"
 
 int main(int argc, char const *argv[])
 {
-    int field[SIZE][SIZE] = 
-    {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, -1, 0, 0, 0, 1, 0, 0, 1, 0},
-        { 5, 0, 4, 4, 4, 4, 0, 0, 1, 0},
-        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 5, 0, 1, 0, -1, 0, 0, 0, 0, 0},
-        { 5, 0, 0, 0, 0, 0, 0, 0, 3, 0},
-        { 5, 0, 0, 0, 0, 0, 0, 0, 3, 0},
-        { 0, 0, -1, 0, 0, 2, 2, 0, 3, 0},
-        { 0, 3, 3, 3, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    };
+    int field[SIZE][SIZE];
+    int orientation = HORIZONTAL;
+    int length = 3;
+    buildarrays(field, MISSED);
 
     int id_menu = menu();
 
     switch (id_menu)
     {
-    case START:
-        gameloop(field);
-        break;
-    
-    default:
-        break;
+        case START:
+            buildboat(field, selectboat(field, orientation, length), orientation, length);
+            selectposition(field);
+            break;
+        
+        default:
+            break;
     }
 
 }

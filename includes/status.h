@@ -1,3 +1,4 @@
 #define MISSED -1
 #define EMPTY 0
-#define HIT 1
+#define BOAT 1
+#define HIT 2
