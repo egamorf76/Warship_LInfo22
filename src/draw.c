@@ -62,7 +62,7 @@ void printfield(int const field[SIZE][SIZE], VECTOR const pos)
 /// @param pos Actual selected position
 /// @param orientation Actual selected orientation
 /// @param length Actual length
-void printfieldboat(int const field[SIZE][SIZE], VECTOR const pos, int const orientation, int const length)
+void printfieldboat(int const field[SIZE][SIZE], BOAT const boat)
 {
     printheader();
 
@@ -77,7 +77,7 @@ void printfieldboat(int const field[SIZE][SIZE], VECTOR const pos, int const ori
         for (int j = 0; j < SIZE; j++) {
             printf(" ");
 
-            if (isboatplace(pos, j, i, orientation, length) == 1) {
+            if (isboatplace(boat, j, i) == 1) {
                 //White background at selected position
                 printf("\033[37m\033[47m"); 
             }
@@ -94,5 +94,5 @@ void printfieldboat(int const field[SIZE][SIZE], VECTOR const pos, int const ori
     }
 
     //print selected position
-    printf("\n%c%d", ALPHABET[pos.X], pos.Y + 1);
+    printf("\n%c%d", ALPHABET[boat.Position.X], boat.Position.Y + 1);
 }

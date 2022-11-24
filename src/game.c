@@ -56,16 +56,22 @@ VECTOR selectposition(int const field[SIZE][SIZE])
 /// @param orientation 0 Horizontal and 1 Vertical
 /// @param length Length of the boat
 /// @return Return position to start build boat
-VECTOR selectboat(int const field[SIZE][SIZE], int * orientation, int const length)
+BOAT selectboat(int const field[SIZE][SIZE], int orientation, int const length)
 {
     VECTOR selected;
     selected.X = 0;
     selected.Y = 0;
+
+    BOAT boat;
+    boat.Length = length;
+    boat.Position = selected;
+    boat.Orientation = orientation;
+
     char key;
 
     while (1)
     {
-        printfieldboat(field, selected, orientation, length);
+        printfieldboat(field, boat);
         key = getch();
 
         switch (key)
@@ -98,10 +104,11 @@ VECTOR selectboat(int const field[SIZE][SIZE], int * orientation, int const leng
             case ESC:
                 selected.X = -1;
                 selected.Y = -1;
-                return selected;
+                boat.Position = selected;
+                return boat;
 
             case ENTER:
-                return selected;
+                return boat;
         }
 
         if (orientation == HORIZONTAL) {
@@ -112,6 +119,8 @@ VECTOR selectboat(int const field[SIZE][SIZE], int * orientation, int const leng
             selected.X = clamp(selected.X, 0, SIZE - 1);
             selected.Y = clamp(selected.Y, 0, SIZE - 3);
         }
+        boat.Position = selected;
+        boat.Orientation = orientation;
     }
 }
 
@@ -120,15 +129,15 @@ VECTOR selectboat(int const field[SIZE][SIZE], int * orientation, int const leng
 /// @param pos Actual selected position
 /// @param orientation Actual selected orintation
 /// @param length Actual length
-void buildboat(int * field[SIZE][SIZE], VECTOR const pos, int const orientation, int const length) {
-    if (orientation == HORIZONTAL) {
-        for (int i = 0; i < length; i++) {
-            field[pos.Y][pos.X + i] = BOAT;
+void buildboat(int * field[SIZE][SIZE], BOAT const boat) {
+    if (boat.Orientation == HORIZONTAL) {
+        for (int i = 0; i < boat.Length; i++) {
+            field[boat.Position.Y][boat.Position.X + i] = PLACED;
         }
     }
     else {
-        for (int i = 0; i < length; i++) {
-            field[pos.Y + i][pos.X] = BOAT;
+        for (int i = 0; i < boat.Length; i++) {
+            field[boat.Position.Y + i][boat.Position.X] = PLACED;
         }
     }
 }
