@@ -1,124 +1,81 @@
-#include <stdio.h>
-#include "../includes/config.h"
-#include "../includes/vector.h"
-#include "../includes/math.h"
+#include "../includes/boat.h"
 #include "../includes/status.h"
-#include "draw.c"
+#include "../includes/config.h"
 
-/// @brief Start gameloop from 2D array to return selected position
-/// @param field 2D array of the field
-/// @return Return status : -1 = error else ok
-VECTOR selectposition(int const field[SIZE][SIZE])
-{
-    VECTOR selected;
-    selected.X = 0;
-    selected.Y = 0;
-    char key;
+/// @brief Build the boat on the feild from position, orientation and length
+/// @param field 2D array of the feild
+/// @param boat Actual selected boat
+/// @return Return -1 if exit, 0 if error else 1
+int buildboat(int field[SIZE][SIZE], BOAT const boat) {
+    //If exit
+    if (boat.Position.X == -1 && boat.Position.Y == -1) { return -1; }
 
-    while (1)
-    {
-        printfieldselection(field, selected);
-        key = getch(); //Wait next key pressed
-
-        switch (key)
-        {
-            case UP_ARROW:
-                selected.Y--;
-                break;
-
-            case DOWN_ARROW:
-                selected.Y++;
-                break;
-
-            case LEFT_ARROW:
-                selected.X--;
-                break;
-
-            case RIGHT_ARROW:
-                selected.X++;
-                break;
-            
-            case ESC:
-                selected.X = -1;
-                selected.Y = -1;
-                return selected;
-
-            case ENTER:
-                return selected;
+    //If boat exist at same place
+    if (isboatexist(field, boat) == 0) { return 0; }
+    
+    if (boat.Orientation == HORIZONTAL) {
+        for (int i = 0; i < boat.Length; i++) {
+            //Affect status at boat's place
+            field[boat.Position.Y][boat.Position.X + i] = boatsstatus[i];
         }
-
-        selected.X = clamp(selected.X, 0, SIZE - 1);
-        selected.Y = clamp(selected.Y, 0, SIZE - 1);
     }
+    else {
+        for (int i = 0; i < boat.Length; i++) {
+            //Affect status at boat's place
+            field[boat.Position.Y + i][boat.Position.X] = boatsstatus[i];
+        }
+    }
+    return 1;
 }
 
-/// @brief Print feild to place a boat
-/// @param field 2D array of feild
-/// @param orientation 0 Horizontal and 1 Vertical
-/// @param length Length of the boat
-/// @return Return boat struct
-BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length)
-{
-    VECTOR selected;
-    selected.X = 0;
-    selected.Y = 0;
+/// @brief Try a shot on field
+/// @param field Actuel field
+/// @param pos Selected position
+/// @return Return -1 if exit, 0 if error, 1 if Missed and 2 if Hit
+int hit(int field[SIZE][SIZE], VECTOR const pos) {
+    //If exit
+    if (pos.X == -1 && pos.Y == -1) { return -1; }
 
-    BOAT boat;
-    boat.Length = length;
-    boat.Position = selected;
-    boat.Orientation = orientation;
-
-    char key;
-
-    while (1)
+    switch (field[pos.Y][pos.X])
     {
-        printfieldboat(field, boat);
-        key = getch(); //Wait next key pressed
+    //Already a hit at this place
+    case MISSED:
+        return 0;
+        break;
+    
+    case HIT:
+        return 0;
+        break;
 
-        switch (key)
-        {
-            case UP_ARROW:
-                boat.Position.Y--;
-                break;
+    //Hit in water
+    case EMPTY:
+        field[pos.Y][pos.X] = MISSED;
+        return MISSED;
+        break;
 
-            case DOWN_ARROW:
-                boat.Position.Y++;
-                break;
+    //Hit a boat
+    case SMALL:
+        field[pos.Y][pos.X] = HIT;
+        return SMALL;
+        break;
+    
+    case MEDIUM:
+        field[pos.Y][pos.X] = HIT;
+        return MEDIUM;
+        break;
 
-            case LEFT_ARROW:
-                boat.Position.X--;
-                break;
+    case LARGE:
+        field[pos.Y][pos.X] = HIT;
+        return LARGE;
+        break;
 
-            case RIGHT_ARROW:
-                boat.Position.X++;
-                break;
-
-            case R: //Change rotation of the boat by ressing R key
-                if (boat.Orientation == HORIZONTAL) {
-                    boat.Orientation = VERTICAL;
-                }
-                else {
-                    boat.Orientation = HORIZONTAL;
-                }
-                break;
-            
-            case ESC:
-                boat.Position.X = -1;
-                boat.Position.Y = -1;
-                return boat;
-
-            case ENTER:
-                return boat;
-        }
-
-        //Clamp selected position in terms of the orientation
-        if (boat.Orientation == HORIZONTAL) {
-            boat.Position.X = clamp(boat.Position.X, 0, SIZE - boat.Length);
-            boat.Position.Y = clamp(boat.Position.Y, 0, SIZE - 1);
-        }
-        else {
-            boat.Position.X = clamp(boat.Position.X, 0, SIZE - 1);
-            boat.Position.Y = clamp(boat.Position.Y, 0, SIZE - boat.Length);
-        }
+    case EXTRALARGE:
+        field[pos.Y][pos.X] = HIT;
+        return EXTRALARGE;
+        break;
+    
+    default:
+        return 0;
+        break;
     }
 }

@@ -8,7 +8,14 @@
 /// @return Return a char contains icon
 char geticon(int const status)
 {
-    return ICONS[clamp(status + 1, 0, strlen(ICONS) - 1)];
+    int sta = status;
+    
+    if (sta < -1) {
+        sta = -1;
+    }
+    sta++;
+    
+    return ICONS[clamp(sta, 0, strlen(ICONS) - 1)];
 }
 
 

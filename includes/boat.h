@@ -1,4 +1,5 @@
 #include "../includes/vector.h"
+#include "../includes/status.h"
 
 #define HORIZONTAL 0
 #define VERTICAL 1
@@ -6,8 +7,9 @@
 #ifndef BOAT_H
 #define BOAT_H
 
-int number_boats = 5;
 int boats[5] = { 2, 3, 3, 4, 5 };
+int number_boats = sizeof boats / sizeof[0];
+int boatsstatus[number_boats] = { SMALL, MEDIUM, MEDIUM, LARGE, EXTRALARGE };
 
 /// @brief 2D Vector, Orientation and Length of a boat
 typedef struct {
