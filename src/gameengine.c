@@ -9,7 +9,7 @@ int isend(int field[SIZE][SIZE], BOAT boats[number_boats])
 }
 
 /// @brief Start game
-/// @return -1 to exit, O if error else 1
+/// @return -1 to exit, 0 if error else 1
 int start() 
 {
     BOAT boats[number_boats];
