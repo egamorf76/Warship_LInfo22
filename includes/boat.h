@@ -7,8 +7,8 @@
 #ifndef BOAT_H
 #define BOAT_H
 
-int boats[5] = { 2, 3, 3, 4, 5 };
-int number_boats = sizeof boats / sizeof boats[0];
+int boatslength[5] = { 2, 3, 3, 4, 5 };
+int number_boats = sizeof boatslength / sizeof boatslength[0];
 int boatsstatus[5] = { SMALL, MEDIUM, MEDIUM, LARGE, EXTRALARGE };
 
 /// @brief 2D Vector, Orientation and Length of a boat
