@@ -1,6 +1,6 @@
 #include "menu.c"
-#include "game.c"
-#include "field.c"
+#include "actions.c"
+#include "selections.c"
 #include "../includes/config.h"
 #include "../includes/array.h"
 

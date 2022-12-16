@@ -31,49 +31,53 @@ int buildboat(int field[SIZE][SIZE], BOAT const boat) {
 /// @brief Try a shot on field
 /// @param field Actuel field
 /// @param pos Selected position
-/// @return Return -1 if exit, 0 if error, 1 if Missed and 2 if Hit
-int hit(int field[SIZE][SIZE], VECTOR const pos) {
-    //If exit
-    if (pos.X == -1 && pos.Y == -1) { return -1; }
+/// @return Return -1 if exit, 0 if error or already hit, 1 if Missed and 2 if Hit
+int hit(int field[SIZE][SIZE], VECTOR const pos)
+{
+    // If exit
+    if (pos.X == -1 && pos.Y == -1)
+    {
+        return -1;
+    }
 
     switch (field[pos.Y][pos.X])
     {
-    //Already a hit at this place
+    // Already a hit at this place
     case MISSED:
         return 0;
         break;
-    
+
     case HIT:
         return 0;
         break;
 
-    //Hit in water
+    // Hit in water
     case EMPTY:
         field[pos.Y][pos.X] = MISSED;
         return MISSED;
         break;
 
-    //Hit a boat
+    // Hit a boat
     case SMALL:
         field[pos.Y][pos.X] = HIT;
-        return SMALL;
+        return HIT;
         break;
-    
+
     case MEDIUM:
         field[pos.Y][pos.X] = HIT;
-        return MEDIUM;
+        return HIT;
         break;
 
     case LARGE:
         field[pos.Y][pos.X] = HIT;
-        return LARGE;
+        return HIT;
         break;
 
     case EXTRALARGE:
         field[pos.Y][pos.X] = HIT;
-        return EXTRALARGE;
+        return HIT;
         break;
-    
+
     default:
         return 0;
         break;

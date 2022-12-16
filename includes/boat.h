@@ -8,8 +8,8 @@
 #define BOAT_H
 
 int boats[5] = { 2, 3, 3, 4, 5 };
-int number_boats = sizeof boats / sizeof[0];
-int boatsstatus[number_boats] = { SMALL, MEDIUM, MEDIUM, LARGE, EXTRALARGE };
+int number_boats = sizeof boats / sizeof boats[0];
+int boatsstatus[5] = { SMALL, MEDIUM, MEDIUM, LARGE, EXTRALARGE };
 
 /// @brief 2D Vector, Orientation and Length of a boat
 typedef struct {
@@ -50,7 +50,7 @@ int isboatexist(int const field[SIZE][SIZE], BOAT const boat) {
     if (boat.Orientation == HORIZONTAL) {
         for (int i = 0; i < boat.Length; i++) {
             //If Already a boat exist
-            if (field[boat.Position.Y][boat.Position.X + i] == PLACED) {
+            if (field[boat.Position.Y][boat.Position.X + i] <= SMALL) {
                 return 0;
             }
         }
@@ -58,7 +58,7 @@ int isboatexist(int const field[SIZE][SIZE], BOAT const boat) {
     else {
         for (int i = 0; i < boat.Length; i++) {
             //If Already a boat exist
-            if (field[boat.Position.Y + i][boat.Position.X] == PLACED) {
+            if (field[boat.Position.Y + i][boat.Position.X] <= SMALL) {
                 return 0;
             }
         }

@@ -3,7 +3,7 @@
 #include "../includes/vector.h"
 #include "../includes/math.h"
 #include "../includes/status.h"
-#include "draw.c"
+#include "drawing.c"
 
 /// @brief Start gameloop from 2D array to return selected position
 /// @param field 2D array of the field
