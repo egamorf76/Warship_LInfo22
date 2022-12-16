@@ -5,14 +5,14 @@
 #include "../includes/status.h"
 #include "drawing.c"
 
-/// @brief Start gameloop from 2D array to return selected position
+/// @brief Print feild to return selected position
 /// @param field 2D array of the field
 /// @return Return status : -1 = error else ok
 VECTOR selectposition(int const field[SIZE][SIZE])
 {
     VECTOR selected;
-    selected.X = 0;
-    selected.Y = 0;
+    selected.X = 4;
+    selected.Y = 4;
     char key;
 
     while (1)
@@ -60,8 +60,8 @@ VECTOR selectposition(int const field[SIZE][SIZE])
 BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length)
 {
     VECTOR selected;
-    selected.X = 0;
-    selected.Y = 0;
+    selected.X = 4;
+    selected.Y = 4;
 
     BOAT boat;
     boat.Length = length;
