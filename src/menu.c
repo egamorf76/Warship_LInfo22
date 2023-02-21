@@ -3,7 +3,7 @@
 #include "../includes/math.h"
 #include "../includes/string.h"
 #include <stdio.h>
-#include <conio.h>
+#include "./input.c"
 
 /// @brief Print menu at selected point 
 /// @param selected Selected point
