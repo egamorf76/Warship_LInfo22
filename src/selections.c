@@ -3,8 +3,8 @@
 #include "../includes/vector.h"
 #include "../includes/math.h"
 #include "../includes/status.h"
+#include "../includes/input.h"
 #include "drawing.c"
-#include "input.c"
 
 /// @brief Print feild to return selected position
 /// @param field 2D array of the field

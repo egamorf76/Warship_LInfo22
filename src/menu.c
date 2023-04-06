@@ -2,16 +2,17 @@
 #include "../includes/menu.h"
 #include "../includes/math.h"
 #include "../includes/string.h"
+#include "../includes/input.h"
 #include <stdio.h>
-#include "./input.c"
 
-/// @brief Print menu at selected point 
+/// @brief Print menu at selected point
 /// @param selected Selected point
-void printm(int selected) {
+void printm(int selected)
+{
     printf("\e[1;1H\e[2J");
     printf("Use UP / DOWN arrows to move, use ENTER to select and ESC to exit :\n\n");
 
-    char messages[2][25] = { "    Commencer", "    Connecter" };
+    char messages[2][25] = {"    Commencer", "    Connecter"};
 
     replacechar(messages[selected], 2, SELECTOR);
 
@@ -20,12 +21,13 @@ void printm(int selected) {
     {
         strcat(result, strcat(messages[i], "\n"));
     }
-    printf(result);
+    printf("%s", result);
 }
 
 /// @brief Open menu and return selected
 /// @return Int of menu selected
-int menu() {
+int menu()
+{
     int selected = 0;
     char key;
 
@@ -34,24 +36,26 @@ int menu() {
         printm(selected);
         key = getch();
 
+        printf("key pressed: %c\n", key);
+
         switch (key)
         {
-            case UP_ARROW:
-                selected--;
-                break;
+        case UP_ARROW:
+            selected--;
+            break;
 
-            case DOWN_ARROW:
-                selected++;
-                break;
-            
-            case ESC:
-                return -1;
+        case DOWN_ARROW:
+            selected++;
+            break;
 
-            case ENTER:
-                return selected;
+        case ESC:
+            return -1;
 
-            default:
-                break;
+        case ENTER:
+            return selected;
+
+        default:
+            break;
         }
         selected = clamp(selected, 0, 1);
     }
