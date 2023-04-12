@@ -10,7 +10,7 @@
 void printm(int selected)
 {
     printf("\e[1;1H\e[2J");
-    printf("Use UP / DOWN arrows to move, use ENTER to select and ESC to exit :\n\n");
+    printf("Use Z / S arrows to move, use ENTER to select and ESC to exit :\n\n");
 
     char messages[2][25] = {"    Commencer", "    Connecter"};
 
@@ -35,8 +35,6 @@ int menu()
     {
         printm(selected);
         key = getch();
-
-        printf("key pressed: %c\n", key);
 
         switch (key)
         {
