@@ -20,7 +20,6 @@ int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats])
         {
             printf("\nUn bateau de longueur %d a été coulé\n", res);
         }
-        
     }
 
     return 1;

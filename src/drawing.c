@@ -21,7 +21,7 @@ char geticon(int const status)
 
 /// @brief print header of field
 void printheader() {
-    //printf("\e[1;1H\e[2J"); //clear console
+    printf("\e[1;1H\e[2J"); //clear console
     printf("Use Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n");
     printf("   | A B C D E F G H I J\n");
     printf("---|--------------------\n");
