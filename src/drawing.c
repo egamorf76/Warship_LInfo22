@@ -21,38 +21,11 @@ char geticon(int const status)
 
 /// @brief print header of field
 void printheader() {
-    printf("\e[1;1H\e[2J");
-    printf("Use UP / DOWN / LEFT / RIGHT arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n");
+    printf("\e[1;1H\e[2J"); //clear console
+    printf("Use Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n");
     printf("   | A B C D E F G H I J\n");
     printf("---|--------------------\n");
 }
-
-
-/// @brief Print of all the field
-/// @param field 2D array of the field
-/// @param pos Actual selected position
-void printfield(int const field[SIZE][SIZE])
-{
-    printheader();
-
-    for (int i = 0; i < SIZE; i++) {
-        if (i < 9) {
-            printf(" ");
-        }
-
-        // print row number
-        printf("%d |", i + 1); 
-
-        for (int j = 0; j < SIZE; j++) {
-            //print icon
-            printf(" %c", geticon(field[i][j]));
-        }
-
-        //Return line
-        printf("\n");
-    }
-}
-
 
 /// @brief Print of all the field
 /// @param field 2D array of the field
@@ -89,7 +62,7 @@ void printfieldselection(int const field[SIZE][SIZE], VECTOR const pos)
     }
 
     //print selected position
-    printf("\n%c%d", ALPHABET[pos.X], pos.Y + 1);
+    printf("\n%c%d\n", ALPHABET[pos.X], pos.Y + 1);
 }
 
 
@@ -128,5 +101,5 @@ void printfieldboat(int const field[SIZE][SIZE], BOAT const boat)
     }
 
     //print selected position
-    printf("\n%c%d", ALPHABET[boat.Position.X], boat.Position.Y + 1);
+    printf("\n%c%d\n", ALPHABET[boat.Position.X], boat.Position.Y + 1);
 }
