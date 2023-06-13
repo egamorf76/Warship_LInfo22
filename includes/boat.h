@@ -70,7 +70,7 @@ int isboatexist(const int field[SIZE][SIZE], const BOAT boat) {
 /// @param field Actual feild
 /// @param boat New boat
 /// @param status Status of the boat 
-/// @return 1 > if boat equals else 0
+/// @return boat length if boat equals else 0
 int isboatis(const int field[SIZE][SIZE], const BOAT boat, const int status) {
     if (boat.Orientation == HORIZONTAL) {
         for (int i = 0; i < boat.Length; i++) {

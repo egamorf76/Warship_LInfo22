@@ -34,7 +34,7 @@ int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
 
         do 
         { 
-            boats[i] = selectboat(field, HORIZONTAL, boatslength[i]);
+            boats[i] = selectboat(field, HORIZONTAL, boatslength[i], header);
             result = buildboat(field, boats[i]);
 
             if (result == -1) { return -1; } //Except if exit
@@ -45,14 +45,15 @@ int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
 
 /// @brief Start game
 /// @return -1 to exit, 0 if error else 1
-int start(int field[SIZE][SIZE], const BOAT boats[number_boats]) 
+int start(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], const BOAT otherboats[number_boats]) 
 {
-    while (isend(field, boats) != 1)
+    while (isend(otherfield, otherboats) != 1)
     {   
         int res;
         do
         {
-            res = hit(field, selectposition(field));
+            printownfield(ownfield, ownclear);
+            res = hit(otherfield, selectposition(otherfield, header));
             
             if (res == -1)
             {
