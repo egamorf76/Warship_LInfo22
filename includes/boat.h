@@ -24,7 +24,7 @@ typedef struct {
 /// @param x Actual X
 /// @param y Actual Y
 /// @return return 0 if not a boat place and 1 if it is a boat position
-int isboatplace(BOAT boat, int x, int y) {
+int isboatplace(const BOAT boat, const int x, const int y) {
     if (boat.Orientation == HORIZONTAL) {
         for (int i = 0; i < boat.Length; i++) {
             if (boat.Position.X + i == x && boat.Position.Y == y) {
@@ -46,7 +46,7 @@ int isboatplace(BOAT boat, int x, int y) {
 /// @param field Actual feild
 /// @param boat New boat
 /// @return 1 if no boat else 0
-int isboatexist(int const field[SIZE][SIZE], BOAT const boat) {    
+int isboatexist(const int field[SIZE][SIZE], const BOAT boat) {    
     if (boat.Orientation == HORIZONTAL) {
         for (int i = 0; i < boat.Length; i++) {
             //If Already a boat exist
@@ -64,6 +64,32 @@ int isboatexist(int const field[SIZE][SIZE], BOAT const boat) {
         }
     }
     return 1;
+}
+
+/// @brief Check if a boat have value on field
+/// @param field Actual feild
+/// @param boat New boat
+/// @param status Status of the boat 
+/// @return boat length if boat equals else 0
+int isboatis(const int field[SIZE][SIZE], const BOAT boat, const int status) {
+    if (boat.Orientation == HORIZONTAL) {
+        for (int i = 0; i < boat.Length; i++) {
+            //If a boat part isn't "status" then false
+            if (field[boat.Position.Y][boat.Position.X + i] != status) {
+                return 0;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < boat.Length; i++) {
+            //If a boat part isn't "status" then false
+            if (field[boat.Position.Y + i][boat.Position.X] != status) {
+                return 0;
+            }
+        }
+    }
+
+    return boat.Length;    
 }
 
 #endif

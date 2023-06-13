@@ -3,19 +3,30 @@
 #include "../includes/config.h"
 #include "../includes/array.h"
 
-int isend(int field[SIZE][SIZE], BOAT boats[number_boats]) 
+/// @brief Check if all boats are hit
+/// @param field the actual field
+/// @param boats all the boats
+/// @return if end 1 else 0
+int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats]) 
 {
-    return 0;
+    for (size_t i = 0; i < number_boats; i++)
+    {
+        int res = isboatis(field, boats[i], HIT);
+        if (res == 0)
+        {
+            return 0;
+        }
+        if (res != 1)
+        {
+            printf("\nUn bateau de longueur %d a été coulé\n", res);
+        }
+    }
+
+    return 1;
 }
 
-/// @brief Start game
-/// @return -1 to exit, 0 if error else 1
-int start() 
+int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
 {
-    BOAT boats[number_boats];
-    int field[SIZE][SIZE];
-    buildarrays(field, EMPTY);
-
     //For each boats build a new one on the field
     for (int i = 0; i < number_boats; i++) 
     {
@@ -23,27 +34,33 @@ int start()
 
         do 
         { 
-            boats[i] = selectboat(field, HORIZONTAL, boatslength[i]);
+            boats[i] = selectboat(field, HORIZONTAL, boatslength[i], header);
             result = buildboat(field, boats[i]);
 
             if (result == -1) { return -1; } //Except if exit
         }
         while (result != 1); //If error : retry
     }
-    
-    while (isend(field, boats) != 1)
+}
+
+/// @brief Start game
+/// @return -1 to exit, 0 if error else 1
+int start(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], const BOAT otherboats[number_boats]) 
+{
+    while (isend(otherfield, otherboats) != 1)
     {   
         int res;
         do
         {
-            res = hit(field, selectposition(field));
+            printownfield(ownfield, ownclear);
+            res = hit(otherfield, selectposition(otherfield, header));
             
             if (res == -1)
             {
                 return -1;
             }
         } 
-        while (res != 0);
+        while (res != HIT && res != MISSED);
     }
     return 1;
 }
