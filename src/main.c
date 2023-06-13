@@ -3,14 +3,19 @@
 
 int startgame()
 {
-    BOAT boats[number_boats];
-    int field[SIZE][SIZE];
+    BOAT otherboats[number_boats];
+    int otherfield[SIZE][SIZE];
 
-    buildarrays(field, EMPTY);
+    BOAT ownboats[number_boats];
+    int ownfield[SIZE][SIZE];
+
+    buildarrays(ownfield, EMPTY);
+    buildarrays(otherfield, EMPTY);
     
-    placeboats(field, boats);
+    placeboats(otherfield, otherboats);
+    placeboats(ownfield, ownboats);
 
-    start(field, boats);
+    start(ownfield, otherfield, otherboats);
 
     return 1;
 }
