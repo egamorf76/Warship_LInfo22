@@ -9,45 +9,49 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include "menu.c"
 #include "gameengine.c"
+#include "../includes/message.h"
 
-const int port = 8000;
+#define PORT 3490
+#define MAXDATASIZE 1024
 
+/// @brief start game as server
+/// @return 0 for exit game and 1 for finished game
 int startserver()
 {
     // instanciation des variables
+    MESSAGE messagerecv;
     struct sockaddr_in my_adr;
     struct sockaddr_in serveur_adr;
     socklen_t sz_sock_serveur;
     int sock, sock_distante, val_read;
     int addrlen = sizeof(my_adr);
-    char buffer[1024] = {0};
-    char message[1024];
+    char buf[MAXDATASIZE];
 
-    /* Place les bateaux */
-    BOAT boats[number_boats];
-    int field[SIZE][SIZE];
+    // Les variables de jeux
+    BOAT serverboats[number_boats];
+    int serverfield[SIZE][SIZE];
+    int clientfield[SIZE][SIZE];
 
-    buildarrays(field, EMPTY);
+    buildarrays(serverfield, EMPTY);
+    placeboats(serverfield, serverboats);
 
-    placeboats(field, boats);
+    printf("test");
 
-    /* ouverture d'une socket */
+    // ouverture d'une socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    /* cration d'une adresse locale */
+    // cration d'une adresse locale
     memset(&my_adr, '\0', sizeof(my_adr));
     my_adr.sin_family = AF_INET;
-    my_adr.sin_port = htons(port);
+    my_adr.sin_port = htons(PORT);
     my_adr.sin_addr.s_addr = INADDR_ANY;
 
-    /* association de l'adresse locale a la socket */
+    // association de l'adresse locale a la socket
     bind(sock, (struct sockaddr *)&my_adr, sizeof(struct sockaddr_in));
 
-    /* attente des clients */
+    // attente des clients
     listen(sock, 1);
-
     printf("Attend la connection d'un autre joueur");
     
     // Attendre la connexion entrante
@@ -56,24 +60,62 @@ int startserver()
         exit(EXIT_FAILURE);
     }
 
-    
+    // envoie bateaux au client
+    //MESSAGE messagesend = {serverfield, clientfield, 1, "Server send field"};
 
-    // Boucle principale du chat
-    while (1) {
-        // Demander un message à envoyer
-        
-
-        // Envoyer le message au client distant
-        send(sock_distante, message, strlen(message), 0);
-
-        // Effacer le message pour la prochaine itération
-        memset(message, 0, sizeof(message));
-
-        // Lire le message entrant
-        val_read = read(sock_distante, buffer, 1024);
-        printf("Client : %s\n", buffer);
-        memset(buffer, 0, sizeof(buffer));
+    if (send(sock,/*(void *) &messagesend*/ "test Serveur",/*sizeof(messagesend)*/ strlen("test Serveur"), 0) == -1) {
+        perror("send");
+        exit(EXIT_FAILURE);
     }
 
-    return 0;
+    // reception bateaux du client
+    if ((read(sock_distante, buf, MAXDATASIZE)) == -1) {
+        perror("recv");
+        exit(EXIT_FAILURE);
+    }
+
+    //clientfield[SIZE][SIZE] = messagerecv.clientfield;
+    printf("Client : %s\n", buf);
+    memset(buf, 0, sizeof(buf));
+
+    while (1) {
+        // serveur joue un tour
+        if (playround(serverfield, clientfield) != 1) {
+            return 0;
+        }
+
+        // envoie au client
+        MESSAGE messagesend = {serverfield, clientfield, 0, "Serveur played"};
+
+        if (send(sock_distante,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+            perror("send");
+            exit(EXIT_FAILURE);
+        }
+        
+        // reception du client
+        if ((val_read=recv(sock_distante, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
+            perror("recv");
+            exit(EXIT_FAILURE);
+        }
+
+        clientfield[SIZE][SIZE] = messagerecv.clientfield;
+        serverfield[SIZE][SIZE] = messagerecv.serverfield;
+        printf(messagerecv.message);
+
+        if (messagerecv.isend == 1) {
+            return 1;
+        }
+
+        // fin ?
+        if (isend(serverfield, serverboats) == 1) {
+            // envoie au client
+            MESSAGE messagesend = {serverfield, clientfield, 0, "Client win"};
+
+            if (send(sock_distante,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+                perror("send");
+                exit(EXIT_FAILURE);
+            }
+            return 1;
+        }
+    }
 }
