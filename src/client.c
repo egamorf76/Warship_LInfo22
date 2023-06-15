@@ -11,6 +11,7 @@
 #include <errno.h>
 #include "../includes/boat.h"
 #include "../includes/config.h"
+#include "gameengine.c"
 
 int main(int argc, char const *argv[])
 {
@@ -25,8 +26,8 @@ int main(int argc, char const *argv[])
     int clientfield[SIZE][SIZE];
     int serverfield[SIZE][SIZE];
 
-    //buildarrays(clientfield, EMPTY);
-    //placeboats(clientfield, clientboats);
+    buildarrays(clientfield, EMPTY);
+    placeboats(clientfield, clientboats);
 
     // ouverture d'une socket
     sock = socket(AF_INET, SOCK_STREAM, 0);

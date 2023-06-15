@@ -1,8 +1,9 @@
 #pragma once
+#include "../includes/array.h"
+#include "../includes/config.h"
 #include "actions.c"
 #include "selections.c"
-#include "../includes/config.h"
-#include "../includes/array.h"
+
 
 /// @brief Check if all boats are hit
 /// @param field the actual field
