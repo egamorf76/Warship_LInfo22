@@ -8,7 +8,7 @@ typedef struct {
     int serverfield[SIZE][SIZE];
     int clientfield[SIZE][SIZE];
     int isend;
-    char *message;
+    char message[MESSAGESIZE];
 } MESSAGE;
 
 #endif

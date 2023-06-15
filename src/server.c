@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include "../includes/message.h"
 #include "../includes/boat.h"
 #include "../includes/config.h"
 #include "gameengine.c"
@@ -51,25 +52,26 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    // envoie bateaux au client
-    // MESSAGE messagesend = {serverfield, clientfield, 1, "Server send field"};
-    // if (send(sockfd, void *) &messagesend, sizeof(messagesend), 0) == -1) {
-    //     perror("send");
-    //     exit(EXIT_FAILURE);
-    // }
+    // create message
+    MESSAGE messagesend;
+    messagesend.serverfield[SIZE][SIZE] = serverfield[SIZE][SIZE];
+    messagesend.clientfield[SIZE][SIZE] = clientfield[SIZE][SIZE];
+    messagesend.isend = 0;
+    strncpy(messagesend.message, "Server send field", MESSAGESIZE);
 
-    strncpy(message, "Test server", MAXDATASIZE);
-    send(newsockfd, message, strlen(message), 0);
-    memset(message, 0, sizeof(message));
+    // send message
+    send(newsockfd, &messagesend, sizeof(messagesend), 0);
+    memset(&messagesend, 0, sizeof(messagesend));
 
+    MESSAGE messagerecv;
 
     // reception bateaux du client
+    read(sockfd, &messagerecv, sizeof(messagerecv));
 
-    read(newsockfd, buffer, MAXDATASIZE);
-    printf("Server : %s\n", buffer);
-    memset(buffer, 0, sizeof(buffer));
+    printf("Server : %s\n", messagerecv.message);
+    clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
 
-    // clientfield[SIZE][SIZE] = messagerecv.clientfield;
+    memset(&messagerecv, 0, sizeof(messagerecv));
 
     // while (1) {
     //     // serveur joue un tour
@@ -111,6 +113,9 @@ int main(int argc, char const *argv[])
     //         return 1;
     //     }
     // }
+
+    close(sockfd);
+    close(newsockfd);
 
     return 0;
 }

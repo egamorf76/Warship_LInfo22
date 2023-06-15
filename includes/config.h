@@ -1,4 +1,5 @@
 #define SIZE 10
+#define MESSAGESIZE 50
 
 #define UP_ARROW 122
 #define DOWN_ARROW 115

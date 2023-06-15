@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include "../includes/message.h"
 #include "../includes/boat.h"
 #include "../includes/config.h"
 #include "gameengine.c"
@@ -41,27 +42,26 @@ int main(int argc, char const *argv[])
     // on demande un connection sur l'adresse distante
     connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 
+    MESSAGE messagerecv;
+
     // reception bateaux du client
+    read(sockfd, &messagerecv, sizeof(messagerecv));
     
-    read(sockfd, buffer, MAXDATASIZE);
-    printf("Client : %s\n", buffer);
-    memset(buffer, 0, sizeof(buffer));
+    printf("Client : %s\n", messagerecv.message);
+    serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
 
-    // clientfield[SIZE][SIZE] = messagerecv.clientfield;
+    memset(&messagerecv, 0, sizeof(messagerecv));
 
-    // envoie au serveur
-    //MESSAGE messagesend = {serverfield, clientfield, 0, "Client send field"};
+    // create message
+    MESSAGE messagesend;
+    messagesend.serverfield[SIZE][SIZE] = serverfield[SIZE][SIZE];
+    messagesend.clientfield[SIZE][SIZE] = clientfield[SIZE][SIZE];
+    messagesend.isend = 0;
+    strncpy(messagesend.message, "Client send field", MESSAGESIZE);
 
-    // if (send(sock,/*(void *) &messagesend*/ "test client",/*sizeof(messagesend)*/ strlen("test client"), 0) == -1) {
-    //     perror("send");
-    //     exit(EXIT_FAILURE);
-    // }
-
-    strncpy(message, "Test client", MAXDATASIZE);
-    send(sockfd, message, strlen(message), 0);
-
-    memset(message, 0, sizeof(message));
-
+    // send message
+    send(sockfd, &messagesend, sizeof(messagesend), 0);
+    memset(&messagesend, 0, sizeof(messagesend));
 
     // while (1) {
     //     // reception bateaux du client
@@ -103,6 +103,8 @@ int main(int argc, char const *argv[])
     //         exit(EXIT_FAILURE);
     //     }
     // }
+
+    close(sockfd);
 
     return 0;
 }
