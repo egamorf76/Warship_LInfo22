@@ -1,6 +1,4 @@
 #include "menu.c"
-#include "server.c"
-#include "client.c"
 
 
 int main(int argc, char const *argv[])
@@ -8,11 +6,11 @@ int main(int argc, char const *argv[])
     switch (menu())
     {
         case START:
-            return startserver();
+            //return startserver();
             break;
 
         case CONNECT:
-            return startconnect();
+            //return startconnect();
             break; 
         
         default:

@@ -1,5 +1,6 @@
 #include "../includes/vector.h"
 #include "../includes/status.h"
+#include "../includes/config.h"
 
 #define HORIZONTAL 0
 #define VERTICAL 1

@@ -9,29 +9,24 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include "gameengine.c"
-#include "../includes/message.h"
+#include "../includes/boat.h"
+#include "../includes/config.h"
 
-#define PORT 3490
-#define MAXDATASIZE 1024
-
-/// @brief Connect and start game
-/// @return 0 for exit and 1 for finish
-int startconnect()
+int main(int argc, char const *argv[])
 {
     // Instanciation des variables
-    MESSAGE messagerecv;
     struct sockaddr_in sock_host;
     int sock, val_read;
-    char buf[MAXDATASIZE];
+    char buffer[MAXDATASIZE] = {0};
+    char message[MAXDATASIZE];
 
     // Les variables de jeux
     BOAT clientboats[number_boats];
     int clientfield[SIZE][SIZE];
     int serverfield[SIZE][SIZE];
 
-    buildarrays(clientfield, EMPTY);
-    placeboats(clientfield, clientboats);
+    //buildarrays(clientfield, EMPTY);
+    //placeboats(clientfield, clientboats);
 
     // ouverture d'une socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -46,61 +41,67 @@ int startconnect()
     connect(sock, (struct sockaddr *)&sock_host, sizeof(sock_host));
 
     // reception bateaux du client
-    if ((read(sock, buf, MAXDATASIZE)) == -1) {
-        perror("recv");
-        exit(EXIT_FAILURE);
-    }
+    
+    val_read = read(sock, buffer, 1024);
+    printf("Client : %s\n", buffer);
+    memset(buffer, 0, sizeof(buffer));
 
-    //clientfield[SIZE][SIZE] = messagerecv.clientfield;
-    printf("Server : %s\n", buf);
-    memset(buf, 0, sizeof(buf));
+    // clientfield[SIZE][SIZE] = messagerecv.clientfield;
 
     // envoie au serveur
     //MESSAGE messagesend = {serverfield, clientfield, 0, "Client send field"};
 
-    if (send(sock,/*(void *) &messagesend*/ "test client",/*sizeof(messagesend)*/ strlen("test client"), 0) == -1) {
-        perror("send");
-        exit(EXIT_FAILURE);
-    }
+    // if (send(sock,/*(void *) &messagesend*/ "test client",/*sizeof(messagesend)*/ strlen("test client"), 0) == -1) {
+    //     perror("send");
+    //     exit(EXIT_FAILURE);
+    // }
 
-    while (1) {
-        // reception bateaux du client
-        if ((val_read=recv(sock, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
-            perror("recv");
-            exit(EXIT_FAILURE);
-        }
+    strncpy(message, "Test client", MAXDATASIZE);
+    send(sock, message, strlen(message), 0);
 
-        serverfield[SIZE][SIZE] = messagerecv.serverfield;
-        clientfield[SIZE][SIZE] = messagerecv.clientfield;
-        printf(messagerecv.message);
+    memset(message, 0, sizeof(message));
 
-        if (messagerecv.isend == 1) {
-            return 1;
-        }
 
-        // fin ?
-        if (isend(clientboats, clientboats) == 1) {
-            // envoie au serveur
-            MESSAGE messagesend = {serverfield, clientfield, 1, "Server win"};
+    // while (1) {
+    //     // reception bateaux du client
+    //     if ((val_read=recv(sock, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
+    //         perror("recv");
+    //         exit(EXIT_FAILURE);
+    //     }
 
-            if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
-                perror("send");
-                exit(EXIT_FAILURE);
-            };
-            return 1;
-        }
+    //     serverfield[SIZE][SIZE] = messagerecv.serverfield;
+    //     clientfield[SIZE][SIZE] = messagerecv.clientfield;
+    //     printf(messagerecv.message);
 
-        // client joue un tour
-        if (playround(serverfield, clientfield) != 1) {
-            return 0;
-        }
+    //     if (messagerecv.isend == 1) {
+    //         return 1;
+    //     }
 
-        // envoie au serveur
-        MESSAGE messagesend = {serverfield, clientfield, 0, "Client played"};
+    //     // fin ?
+    //     if (isend(clientboats, clientboats) == 1) {
+    //         // envoie au serveur
+    //         MESSAGE messagesend = {serverfield, clientfield, 1, "Server win"};
 
-        if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
-            perror("send");
-            exit(EXIT_FAILURE);
-        }
-    }
+    //         if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+    //             perror("send");
+    //             exit(EXIT_FAILURE);
+    //         };
+    //         return 1;
+    //     }
+
+    //     // client joue un tour
+    //     if (playround(serverfield, clientfield) != 1) {
+    //         return 0;
+    //     }
+
+    //     // envoie au serveur
+    //     MESSAGE messagesend = {serverfield, clientfield, 0, "Client played"};
+
+    //     if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+    //         perror("send");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+
+    return 0;
 }

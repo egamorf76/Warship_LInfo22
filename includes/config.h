@@ -10,3 +10,6 @@
 
 #define ALPHABET "ABCDEFGHIJ"
 #define ICONS "@ 0X"
+
+#define PORT 8000
+#define MAXDATASIZE 1024
