@@ -16,8 +16,8 @@
 int main(int argc, char const *argv[])
 {
     // Instanciation des variables
-    struct sockaddr_in sock_host;
-    int sock, val_read;
+    struct sockaddr_in serveraddr;
+    int sockfd;
     char buffer[MAXDATASIZE] = {0};
     char message[MAXDATASIZE];
 
@@ -29,21 +29,21 @@ int main(int argc, char const *argv[])
     buildarrays(clientfield, EMPTY);
     placeboats(clientfield, clientboats);
 
-    // ouverture d'une socket
-    sock = socket(AF_INET, SOCK_STREAM, 0);
+    // ouverture d'une sockfdet
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     // on cre l'adresse de la machine distante
-    memset(&sock_host, '\0', sizeof(sock_host));
-    sock_host.sin_family = AF_INET;
-    sock_host.sin_port = htons(PORT);
-    inet_aton("127.0.0.1", &sock_host.sin_addr);
+    memset(&serveraddr, '\0', sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_port = htons(PORT);
+    inet_aton("127.0.0.1", &serveraddr.sin_addr);
 
     // on demande un connection sur l'adresse distante
-    connect(sock, (struct sockaddr *)&sock_host, sizeof(sock_host));
+    connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 
     // reception bateaux du client
     
-    val_read = read(sock, buffer, 1024);
+    read(sockfd, buffer, MAXDATASIZE);
     printf("Client : %s\n", buffer);
     memset(buffer, 0, sizeof(buffer));
 
@@ -58,14 +58,14 @@ int main(int argc, char const *argv[])
     // }
 
     strncpy(message, "Test client", MAXDATASIZE);
-    send(sock, message, strlen(message), 0);
+    send(sockfd, message, strlen(message), 0);
 
     memset(message, 0, sizeof(message));
 
 
     // while (1) {
     //     // reception bateaux du client
-    //     if ((val_read=recv(sock, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
+    //     if ((val_read=recv(sockfd, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
     //         perror("recv");
     //         exit(EXIT_FAILURE);
     //     }
@@ -83,7 +83,7 @@ int main(int argc, char const *argv[])
     //         // envoie au serveur
     //         MESSAGE messagesend = {serverfield, clientfield, 1, "Server win"};
 
-    //         if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+    //         if (send(sockfd,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
     //             perror("send");
     //             exit(EXIT_FAILURE);
     //         };
@@ -98,7 +98,7 @@ int main(int argc, char const *argv[])
     //     // envoie au serveur
     //     MESSAGE messagesend = {serverfield, clientfield, 0, "Client played"};
 
-    //     if (send(sock,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
+    //     if (send(sockfd,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
     //         perror("send");
     //         exit(EXIT_FAILURE);
     //     }
