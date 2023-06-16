@@ -61,14 +61,17 @@ int main(int argc, char const *argv[])
 
     // send message
     send(newsockfd, &messagesend, sizeof(messagesend), 0);
-    memset(&messagesend, 0, sizeof(messagesend));
+    memset(&messagesend, 1, sizeof(messagesend));
 
     MESSAGE messagerecv;
+        strncpy(messagerecv.message, "\0", MESSAGESIZE);
+
 
     // reception bateaux du client
     read(sockfd, &messagerecv, sizeof(messagerecv));
 
     printf("Server : %s\n", messagerecv.message);
+    printf("Server : %d\n", messagerecv.isend);
     clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
 
     memset(&messagerecv, 0, sizeof(messagerecv));

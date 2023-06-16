@@ -48,6 +48,7 @@ int main(int argc, char const *argv[])
     read(sockfd, &messagerecv, sizeof(messagerecv));
     
     printf("Client : %s\n", messagerecv.message);
+    printf("Client : %d\n", messagerecv.isend);
     serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
 
     memset(&messagerecv, 0, sizeof(messagerecv));
