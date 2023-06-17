@@ -66,43 +66,46 @@ int main(int argc, char const *argv[])
 
     memset(&messagerecv, 0, sizeof(messagerecv));
 
-    //while (1) {
-        sleep(3);
+    printownfield(serverfield, "Server field : \n");
+    printownfield(clientfield, "Client field : \n");
 
-        // serveur joue un tour
-        if (playroundnoretry(serverfield, clientfield) != 1) {
-            return 0;
-        }
+    // while (1) {
+    //     sleep(3);
 
-        // create and send message to server
-        messagesend = createmessage(serverfield, clientfield, 0, "Server send field");
-        send(newsockfd, &messagesend, MAXDATASIZE, 0);
-        memset(&messagesend, 0, sizeof(messagesend));
+    //     // serveur joue un tour
+    //     if (playroundnoretry(serverfield, clientfield) != 1) {
+    //         return 0;
+    //     }
 
-        // recevied and read message from server
-        read(newsockfd, &messagerecv, sizeof(messagerecv));
+    //     // create and send message to server
+    //     messagesend = createmessage(serverfield, clientfield, 0, "Server send field");
+    //     send(newsockfd, &messagesend, MAXDATASIZE, 0);
+    //     memset(&messagesend, 0, sizeof(messagesend));
 
-        clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
-        serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
-        printf("Server : %s\n", messagerecv.message);
+    //     // recevied and read message from server
+    //     read(newsockfd, &messagerecv, sizeof(messagerecv));
 
-        if (messagerecv.isend == 1) {
-            return 1;
-        }
+    //     clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
+    //     serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
+    //     printf("Server : %s\n", messagerecv.message);
 
-        memset(&messagerecv, 0, sizeof(messagerecv));
+    //     if (messagerecv.isend == 1) {
+    //         return 1;
+    //     }
 
-        // fin ?
-        if (isend(serverfield, serverboats) == 1) {
-            // create and send message to server
-            messagesend = createmessage(serverfield, clientfield, 0, "Client win");
-            send(newsockfd, &messagesend, MAXDATASIZE, 0);
-            memset(&messagesend, 0, sizeof(messagesend));
+    //     memset(&messagerecv, 0, sizeof(messagerecv));
 
-            printf("Client win");
-            return 1;
-        }
-    //}
+    //     // fin ?
+    //     if (isend(serverfield, serverboats) == 1) {
+    //         // create and send message to server
+    //         messagesend = createmessage(serverfield, clientfield, 0, "Client win");
+    //         send(newsockfd, &messagesend, MAXDATASIZE, 0);
+    //         memset(&messagesend, 0, sizeof(messagesend));
+
+    //         printf("Client win");
+    //         return 1;
+    //     }
+    // }
 
     close(sockfd);
     close(newsockfd);
