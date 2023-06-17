@@ -25,6 +25,8 @@ int main(int argc, char const *argv[])
     BOAT clientboats[number_boats];
     int clientfield[SIZE][SIZE];
     int serverfield[SIZE][SIZE];
+    struct MESSAGE messagerecv;
+    struct MESSAGE messagesend;
 
     buildarrays(clientfield, EMPTY);
     placeboats(clientfield, clientboats);
@@ -41,60 +43,57 @@ int main(int argc, char const *argv[])
     // on demande un connection sur l'adresse distante
     connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 
-    // recevied and read message from client
-    struct MESSAGE messagerecv;
-    memset(&messagerecv, 0, sizeof(messagerecv));
+    // recevied and read message from server
     recv(sockfd, &messagerecv, sizeof(messagerecv), 0);
 
     printf("Client : %s\n", messagerecv.message);
-    printf("Client : %d\n", messagerecv.isend);
-    clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
+    serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
 
+    memset(&messagerecv, 0, sizeof(messagerecv));
 
-    // create and send message to client
-    struct MESSAGE messagesend = createmessage(serverfield, clientfield, 0, "Client send field");
+    // create and send message to server
+    messagesend = createmessage(serverfield, clientfield, 0, "Client send field");
     send(sockfd, &messagesend, MAXDATASIZE, 0);
+    memset(&messagesend, 0, sizeof(messagesend));
 
-    // while (1) {
-    //     // reception bateaux du client
-    //     if ((val_read=recv(sockfd, (struct recvrtu *)&messagerecv, sizeof(messagerecv), 0)) == -1) {
-    //         perror("recv");
-    //         exit(EXIT_FAILURE);
-    //     }
+    //while (1) {
+        // recevied and read message from server
+        recv(sockfd, &messagerecv, sizeof(messagerecv), 0);
 
-    //     serverfield[SIZE][SIZE] = messagerecv.serverfield;
-    //     clientfield[SIZE][SIZE] = messagerecv.clientfield;
-    //     printf(messagerecv.message);
+        serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
+        clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
+        printf("Client : %s\n", messagerecv.message);
 
-    //     if (messagerecv.isend == 1) {
-    //         return 1;
-    //     }
+        // quit if client win
+        if (messagerecv.isend == 1) {
+            return 1;
+        }
 
-    //     // fin ?
-    //     if (isend(clientboats, clientboats) == 1) {
-    //         // envoie au serveur
-    //         MESSAGE messagesend = {serverfield, clientfield, 1, "Server win"};
+        memset(&messagerecv, 0, sizeof(messagerecv));
 
-    //         if (send(sockfd,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
-    //             perror("send");
-    //             exit(EXIT_FAILURE);
-    //         };
-    //         return 1;
-    //     }
+        // fin ?
+        if (isend(clientfield, clientboats) == 1) {
+            // create and send message to client
+            messagesend = createmessage(serverfield, clientfield, 0, "Server win");
+            send(sockfd, &messagesend, MAXDATASIZE, 0);
+            memset(&messagesend, 0, sizeof(messagesend));
 
-    //     // client joue un tour
-    //     if (playround(serverfield, clientfield) != 1) {
-    //         return 0;
-    //     }
+            printf("Server win");
+            return 1;
+        }
 
-    //     // envoie au serveur
-    //     MESSAGE messagesend = {serverfield, clientfield, 0, "Client played"};
+        sleep(3);
 
-    //     if (send(sockfd,(void *) &messagesend ,sizeof(messagesend), 0) == -1) {
-    //         perror("send");
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
+        // client joue un tour
+        if (playroundnoretry(serverfield, clientfield) != 1) {
+            return 0;
+        }
+
+        // create and send message to server
+        messagesend = createmessage(serverfield, clientfield, 0, "Client played");
+        send(sockfd, &messagesend, MAXDATASIZE, 0);
+        memset(&messagesend, 0, sizeof(messagesend));
+    //}
 
     close(sockfd);
 

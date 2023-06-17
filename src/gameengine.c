@@ -18,10 +18,6 @@ int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats])
         {
             return 0;
         }
-        if (res != 1)
-        {
-            printf("\nUn bateau de longueur %d a été coulé\n", res);
-        }
     }
 
     return 1;
@@ -66,6 +62,24 @@ int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
 
     return 1;
 }
+
+/// @brief Play a round without retry
+/// @param ownfield your field
+/// @param otherfield the oponent field
+/// @return -1 for exit, 0 for error else 1
+int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
+{
+    printownfield(ownfield, ownclear);
+    int res = hit(otherfield, selectposition(otherfield, header));
+    
+    if (res == -1)
+    {
+        return -1;
+    }
+
+    return 1;
+}
+
 
 /// @brief Start game
 /// @return -1 to exit, 0 if error else 1
