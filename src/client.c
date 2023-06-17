@@ -20,7 +20,6 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serveraddr;
     int sockfd;
     char buffer[MAXDATASIZE] = {0};
-    char message[MAXDATASIZE];
 
     // Les variables de jeux
     BOAT clientboats[number_boats];
@@ -33,7 +32,7 @@ int main(int argc, char const *argv[])
     // ouverture d'une sockfdet
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    // on cre l'adresse de la machine distante
+    // creation adresse de la machine distante
     memset(&serveraddr, '\0', sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(PORT);

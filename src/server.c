@@ -21,9 +21,8 @@ int main(int argc, char const *argv[])
     int sockfd, newsockfd;
     int addrlen = sizeof(serveraddr);
     char buffer[MAXDATASIZE] = {0};
-    char message[MAXDATASIZE];
 
-    // Les variables de jeux
+    // variables de jeux
     BOAT serverboats[number_boats];
     int serverfield[SIZE][SIZE];
     int clientfield[SIZE][SIZE];
@@ -34,7 +33,7 @@ int main(int argc, char const *argv[])
     // ouverture d'une socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    // cration d'une adresse locale
+    // creation d'une adresse locale
     memset(&serveraddr, '\0', sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(PORT);
@@ -46,7 +45,7 @@ int main(int argc, char const *argv[])
     // attente des clients
     listen(sockfd, 1);
 
-    // Attendre la connexion entrante
+    // attendre la connexion entrante
     if ((newsockfd = accept(sockfd, (struct sockaddr *)&clientaddr, (socklen_t *)&addrlen)) < 0) {
         perror("accept");
         exit(EXIT_FAILURE);
