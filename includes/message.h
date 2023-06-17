@@ -4,11 +4,22 @@
 #include "../includes/config.h"
 
 /// @brief message to send in socket
-typedef struct {
+struct MESSAGE {
     int serverfield[SIZE][SIZE];
     int clientfield[SIZE][SIZE];
     int isend;
     char message[MESSAGESIZE];
-} MESSAGE;
+};
+
+struct MESSAGE createmessage(int serverfield[SIZE][SIZE], int clientfield[SIZE][SIZE], int isend, char *message) {
+    // create and send message to server
+    struct MESSAGE messagesend = {
+        .serverfield = serverfield[SIZE][SIZE],
+        .clientfield = clientfield[SIZE][SIZE],
+        .isend       = isend,
+    };
+    strncpy(messagesend.message, message, MESSAGESIZE);
+    return messagesend;
+}
 
 #endif

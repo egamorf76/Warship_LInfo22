@@ -52,29 +52,18 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    // create message
-    MESSAGE messagesend;
-    messagesend.serverfield[SIZE][SIZE] = serverfield[SIZE][SIZE];
-    messagesend.clientfield[SIZE][SIZE] = clientfield[SIZE][SIZE];
-    messagesend.isend = 0;
-    strncpy(messagesend.message, "Server send field", MESSAGESIZE);
+    // create and send message to server
+    struct MESSAGE messagesend = createmessage(serverfield, clientfield, 0, "Server send field");
+    send(newsockfd, &messagesend, MAXDATASIZE, 0);
 
-    // send message
-    send(newsockfd, &messagesend, sizeof(messagesend), 0);
-    memset(&messagesend, 1, sizeof(messagesend));
-
-    MESSAGE messagerecv;
-        strncpy(messagerecv.message, "\0", MESSAGESIZE);
-
-
-    // reception bateaux du client
-    read(sockfd, &messagerecv, sizeof(messagerecv));
+    // recevied and read message from server
+    struct MESSAGE messagerecv;
+    memset(&messagerecv, 0, sizeof(messagerecv));
+    recv(newsockfd, &messagerecv, sizeof(messagerecv), 0);
 
     printf("Server : %s\n", messagerecv.message);
     printf("Server : %d\n", messagerecv.isend);
     clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
-
-    memset(&messagerecv, 0, sizeof(messagerecv));
 
     // while (1) {
     //     // serveur joue un tour

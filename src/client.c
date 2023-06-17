@@ -42,27 +42,19 @@ int main(int argc, char const *argv[])
     // on demande un connection sur l'adresse distante
     connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 
-    MESSAGE messagerecv;
+    // recevied and read message from client
+    struct MESSAGE messagerecv;
+    memset(&messagerecv, 0, sizeof(messagerecv));
+    recv(sockfd, &messagerecv, sizeof(messagerecv), 0);
 
-    // reception bateaux du client
-    read(sockfd, &messagerecv, sizeof(messagerecv));
-    
     printf("Client : %s\n", messagerecv.message);
     printf("Client : %d\n", messagerecv.isend);
-    serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
+    clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
 
-    memset(&messagerecv, 0, sizeof(messagerecv));
 
-    // create message
-    MESSAGE messagesend;
-    messagesend.serverfield[SIZE][SIZE] = serverfield[SIZE][SIZE];
-    messagesend.clientfield[SIZE][SIZE] = clientfield[SIZE][SIZE];
-    messagesend.isend = 0;
-    strncpy(messagesend.message, "Client send field", MESSAGESIZE);
-
-    // send message
-    send(sockfd, &messagesend, sizeof(messagesend), 0);
-    memset(&messagesend, 0, sizeof(messagesend));
+    // create and send message to client
+    struct MESSAGE messagesend = createmessage(serverfield, clientfield, 0, "Client send field");
+    send(sockfd, &messagesend, MAXDATASIZE, 0);
 
     // while (1) {
     //     // reception bateaux du client
