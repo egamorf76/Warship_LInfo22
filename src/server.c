@@ -66,9 +66,6 @@ int main(int argc, char const *argv[])
 
     memset(&messagerecv, 0, sizeof(messagerecv));
 
-    printownfield(serverfield, "Server field : \n");
-    printownfield(clientfield, "Client field : \n");
-
     // while (1) {
     //     sleep(3);
 
