@@ -62,7 +62,7 @@ int main(int argc, char const *argv[])
     read(newsockfd, &messagerecv, sizeof(messagerecv));
 
     printf("Server : %s\n", messagerecv.message);
-    clientfield[SIZE][SIZE] = messagerecv.clientfield[SIZE][SIZE];
+    copyarray(clientfield, messagerecv.clientfield);
 
     memset(&messagerecv, 0, sizeof(messagerecv));
 

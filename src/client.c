@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include "../includes/message.h"
+#include "../includes/serialize.h"
 #include "../includes/boat.h"
 #include "../includes/config.h"
 #include "gameengine.c"
@@ -47,7 +48,7 @@ int main(int argc, char const *argv[])
     recv(sockfd, &messagerecv, sizeof(messagerecv), 0);
 
     printf("Client : %s\n", messagerecv.message);
-    serverfield[SIZE][SIZE] = messagerecv.serverfield[SIZE][SIZE];
+    copyarray(serverfield, messagerecv.serverfield);
 
     memset(&messagerecv, 0, sizeof(messagerecv));
 
