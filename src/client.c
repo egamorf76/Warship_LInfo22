@@ -10,7 +10,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include "../includes/message.h"
-#include "../includes/serialize.h"
 #include "../includes/boat.h"
 #include "../includes/config.h"
 #include "gameengine.c"
@@ -56,9 +55,6 @@ int main(int argc, char const *argv[])
     messagesend = createmessage(serverfield, clientfield, 0, "Client send field");
     send(sockfd, &messagesend, MAXDATASIZE, 0);
     memset(&messagesend, 0, sizeof(messagesend));
-
-    printownfield(serverfield, "Server field : \n");
-    printownfield(clientfield, "Client field : \n");
 
     // while (1) {
     //     // recevied and read message from server
