@@ -1,7 +1,9 @@
+#pragma once
+#include "../includes/array.h"
+#include "../includes/config.h"
 #include "actions.c"
 #include "selections.c"
-#include "../includes/config.h"
-#include "../includes/array.h"
+
 
 /// @brief Check if all boats are hit
 /// @param field the actual field
@@ -15,10 +17,6 @@ int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats])
         if (res == 0)
         {
             return 0;
-        }
-        if (res != 1)
-        {
-            printf("\nUn bateau de longueur %d a été coulé\n", res);
         }
     }
 
@@ -43,24 +41,53 @@ int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
     }
 }
 
+/// @brief Play a round
+/// @param ownfield your field
+/// @param otherfield the oponent field
+/// @return -1 for exit, 0 for error else 1
+int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
+{
+    int res;
+    do
+    {
+        printownfield(ownfield, ownclear);
+        res = hit(otherfield, selectposition(otherfield, header));
+        
+        if (res == -1)
+        {
+            return -1;
+        }
+    } 
+    while (res != HIT && res != MISSED);
+
+    return 1;
+}
+
+/// @brief Play a round without retry
+/// @param ownfield your field
+/// @param otherfield the oponent field
+/// @return -1 for exit, 0 for error else 1
+int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
+{
+    printownfield(ownfield, ownclear);
+    int res = hit(otherfield, selectposition(otherfield, header));
+    
+    if (res == -1)
+    {
+        return -1;
+    }
+
+    return 1;
+}
+
+
 /// @brief Start game
 /// @return -1 to exit, 0 if error else 1
 int start(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], const BOAT otherboats[number_boats]) 
 {
     while (isend(otherfield, otherboats) != 1)
     {   
-        int res;
-        do
-        {
-            printownfield(ownfield, ownclear);
-            res = hit(otherfield, selectposition(otherfield, header));
-            
-            if (res == -1)
-            {
-                return -1;
-            }
-        } 
-        while (res != HIT && res != MISSED);
+        playround(ownfield, otherfield);
     }
     return 1;
 }

@@ -1,19 +1,20 @@
+#pragma once
 #include "../includes/config.h"
 #include "../includes/vector.h"
 #include "../includes/math.h"
 #include "../includes/boat.h"
 
 /// @brief String to clear console
-char *clear = "\e[1;1H\e[2J";
+char clear[] = "\e[1;1H\e[2J";
 
 /// @brief String to clear console and print message
-char *ownclear = "\e[1;1H\e[2J\nYour field :\n\n";
+char ownclear[] = "\e[1;1H\e[2J\nYour field :\n\n";
 
 /// @brief String header
-char *header = "\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
+char header[] = "\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
 
 /// @brief String header
-char *headerclear = "\e[1;1H\e[2J\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
+char headerclear[] = "\e[1;1H\e[2J\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
 
 /// @brief Get icon from state of a case
 /// @param status State of the case
@@ -109,9 +110,9 @@ void printfieldboat(int const field[SIZE][SIZE], BOAT const boat)
 /// @brief Draw own feild
 /// @param field 2D array of feild
 /// @param boat Actual selected boat
-void printownfield(int const field[SIZE][SIZE], char *message)
+void printownfield(int const field[SIZE][SIZE], char message[])
 {
-    printf(message);
+    printf("%s", message);
 
     for (int i = 0; i < SIZE; i++) {
         if (i < 9) {

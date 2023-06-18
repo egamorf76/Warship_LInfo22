@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include "../includes/config.h"
 #include "../includes/vector.h"
@@ -9,7 +10,7 @@
 /// @brief Print feild to return selected position
 /// @param field 2D array of the field
 /// @return Return status : -1 = error else ok
-VECTOR selectposition(int const field[SIZE][SIZE], char *message)
+VECTOR selectposition(int const field[SIZE][SIZE], char message[])
 {
     VECTOR selected;
     selected.X = 4;
@@ -18,7 +19,7 @@ VECTOR selectposition(int const field[SIZE][SIZE], char *message)
 
     while (1)
     {
-        printf(message);
+        printf("%s", message);
         printfieldselection(field, selected);
         key = getch(); //Wait next key pressed
 
@@ -59,7 +60,7 @@ VECTOR selectposition(int const field[SIZE][SIZE], char *message)
 /// @param orientation 0 Horizontal and 1 Vertical
 /// @param length Length of the boat
 /// @return Return boat struct
-BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length, char *message)
+BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length, char message[])
 {
     VECTOR selected;
     selected.X = 4;
@@ -74,7 +75,7 @@ BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const le
 
     while (1)
     {
-        printf(message);
+        printf("%s", message);
         printfieldboat(field, boat);
         key = getch(); //Wait next key pressed
 
