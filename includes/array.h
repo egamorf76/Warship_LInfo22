@@ -14,4 +14,15 @@ void buildarrays(int field[SIZE][SIZE], int const value) {
     }
 }
 
+int copyarray(int dest[SIZE][SIZE], const int src[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            dest[i][j] = src[i][j];
+        }
+    }
+    return 1;
+}
+
 #endif

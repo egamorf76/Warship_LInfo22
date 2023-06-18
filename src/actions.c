@@ -1,3 +1,4 @@
+#pragma once
 #include "../includes/boat.h"
 #include "../includes/status.h"
 #include "../includes/config.h"
