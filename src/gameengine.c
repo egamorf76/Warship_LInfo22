@@ -50,7 +50,7 @@ int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
     int res;
     do
     {
-        printownfield(ownfield, ownclear);
+        printownfield(ownfield, "\nYour field :\n\n");
         res = hit(otherfield, selectposition(otherfield, header));
         
         if (res == -1)

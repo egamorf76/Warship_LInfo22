@@ -16,26 +16,12 @@
 #include "../includes/config.h"
 #include "gameengine.c"
 
-int main(int argc, char const *argv[])
-{
+int connectsocket() {
     // Instanciation des variables
     struct sockaddr_in serveraddr;
-    fd_set serverset;
-    int sockfd;
-    char buffer[MAXDATASIZE] = {0};
-
-    // Les variables de jeux
-    BOAT clientboats[number_boats];
-    int clientfield[SIZE][SIZE];
-    int serverfield[SIZE][SIZE];
-    struct MESSAGE messagerecv;
-    struct MESSAGE messagesend;
-
-    buildarrays(clientfield, EMPTY);
-    placeboats(clientfield, clientboats);
 
     // ouverture d'une sockfdet
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     // creation adresse de la machine distante
     memset(&serveraddr, '\0', sizeof(serveraddr));
@@ -45,6 +31,30 @@ int main(int argc, char const *argv[])
 
     // on demande un connection sur l'adresse distante
     connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+
+    return sockfd;
+}
+
+int createsendmessage(int sockfd, const int serverfield[SIZE][SIZE], const int clientfield[SIZE][SIZE], const int isend, const char *message) {
+    // create and send message to server
+    struct MESSAGE messagesend = createmessage(serverfield, clientfield, isend, message);
+    send(sockfd, &messagesend, MAXDATASIZE, 0);
+    memset(&messagesend, 0, sizeof(messagesend));
+}
+
+int main(int argc, char const *argv[])
+{
+    // Instanciation des variables
+    char buffer[MAXDATASIZE] = {0};
+    BOAT clientboats[number_boats];
+    int clientfield[SIZE][SIZE];
+    int serverfield[SIZE][SIZE];
+    struct MESSAGE messagerecv;
+
+    buildarrays(clientfield, EMPTY);
+    placeboats(clientfield, clientboats);
+
+    int sockfd = connectsocket();
 
     // recevied and read message from server
     recv(sockfd, &buffer, sizeof(buffer), 0);
@@ -56,10 +66,7 @@ int main(int argc, char const *argv[])
     memset(&buffer, 0, sizeof(buffer));
     memset(&messagerecv, 0, sizeof(messagerecv));
 
-    // create and send message to server
-    messagesend = createmessage(serverfield, clientfield, 0, "Client send field");
-    send(sockfd, &messagesend, MAXDATASIZE, 0);
-    memset(&messagesend, 0, sizeof(messagesend));
+    createsendmessage(sockfd, serverfield, clientfield, 0, "Client send field");
 
     while (1) {
         // recevied and read message from server
@@ -76,15 +83,11 @@ int main(int argc, char const *argv[])
         }
 
         memset(&buffer, 0, sizeof(buffer));
-        memset(&messagesend, 0, sizeof(messagesend));
+        memset(&messagerecv, 0, sizeof(messagerecv));
 
         // fin ?
         if (isend(clientfield, clientboats) == 1) {
-            // create and send message to client
-            messagesend = createmessage(serverfield, clientfield, 0, "Server win");
-            send(sockfd, &messagesend, MAXDATASIZE, 0);
-            memset(&messagesend, 0, sizeof(messagesend));
-
+            createsendmessage(sockfd, serverfield, clientfield, 1, "Server win");
             printf("Server win");
             return 1;
         }
@@ -94,10 +97,7 @@ int main(int argc, char const *argv[])
             return 0;
         }
 
-        // create and send message to server
-        messagesend = createmessage(serverfield, clientfield, 0, "Client played");
-        send(sockfd, &messagesend, MAXDATASIZE, 0);
-        memset(&messagesend, 0, sizeof(messagesend));
+        createsendmessage(sockfd, serverfield, clientfield, 0, "Client played");
     }
 
     close(sockfd);
