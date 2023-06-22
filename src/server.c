@@ -48,9 +48,6 @@ struct SOCKETFDS createsocket() {
 int createsendmessage(int sockfd, const int serverfield[SIZE][SIZE], const int clientfield[SIZE][SIZE], const int isend, const char *message) {
     // create and send message to server
     struct MESSAGE messagesend = createmessage(serverfield, clientfield, isend, message);
-    
-    printf("Client : %s\n", messagesend.message);
-
     send(sockfd, &messagesend, MAXDATASIZE, 0);
     memset(&messagesend, 0, sizeof(messagesend));
 }
