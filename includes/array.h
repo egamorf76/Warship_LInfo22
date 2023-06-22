@@ -14,6 +14,9 @@ void buildarrays(int field[SIZE][SIZE], int const value) {
     }
 }
 
+/// @brief Copy 2D array
+/// @param dest Destinatary 2D array
+/// @param src Source 2D array
 int copyarray(int dest[SIZE][SIZE], const int src[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++)
     {
