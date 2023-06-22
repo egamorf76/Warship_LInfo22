@@ -66,9 +66,6 @@ int main(int argc, char const *argv[])
 
     struct SOCKETFDS socks = createsocket();
 
-    printf("new socket: %d", socks.clientfd);
-    printf("new socket: %d", socks.serverfd);
-
     // create and send message to server
     createsendmessage(socks.clientfd, serverfield, clientfield, 1, "Server send field");
 

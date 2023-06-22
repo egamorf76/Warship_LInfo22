@@ -7,11 +7,22 @@
 #include "../includes/input.h"
 #include "drawing.c"
 
+/// @brief String to clear console
+char *clear = "\e[1;1H\e[2J";
+
+/// @brief String to clear console and print message
+char *ownclear = "\e[1;1H\e[2J\nYour field :\n\n";
+
+/// @brief String header
+char *header = "\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
+
+/// @brief String header
+char *headerclear = "\e[1;1H\e[2J\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
+
 /// @brief Print feild to return selected position
 /// @param field 2D array of the field
 /// @return Return status : -1 = error else ok
-VECTOR selectposition(int const field[SIZE][SIZE], char message[])
-{
+VECTOR selectposition(int const field[SIZE][SIZE], char *headmessage, char *tailmessage) { 
     VECTOR selected;
     selected.X = 4;
     selected.Y = 4;
@@ -19,8 +30,10 @@ VECTOR selectposition(int const field[SIZE][SIZE], char message[])
 
     while (1)
     {
-        printf("%s", message);
+        printf("%s", headmessage);
         printfieldselection(field, selected);
+        printf("%s", tailmessage);
+
         key = getch(); //Wait next key pressed
 
         switch (key)
@@ -60,8 +73,7 @@ VECTOR selectposition(int const field[SIZE][SIZE], char message[])
 /// @param orientation 0 Horizontal and 1 Vertical
 /// @param length Length of the boat
 /// @return Return boat struct
-BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length, char message[])
-{
+BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const length, char *headmessage, char *tailmessage) {
     VECTOR selected;
     selected.X = 4;
     selected.Y = 4;
@@ -75,8 +87,10 @@ BOAT selectboat(int const field[SIZE][SIZE], int const orientation, int const le
 
     while (1)
     {
-        printf("%s", message);
+        printf("%s", headmessage);
         printfieldboat(field, boat);
+        printf("%s", tailmessage);
+
         key = getch(); //Wait next key pressed
 
         switch (key)
