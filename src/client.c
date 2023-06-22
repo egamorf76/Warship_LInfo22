@@ -1,46 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/select.h>
-#include <netdb.h>
-#include <string.h>
-#include <unistd.h>
-#include <assert.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <errno.h>
 #include "../includes/message.h"
 #include "../includes/boat.h"
 #include "../includes/config.h"
+#include "../includes/socketconfig.h"
 #include "gameengine.c"
-
-int connectsocket() {
-    // Instanciation des variables
-    struct sockaddr_in serveraddr;
-
-    // ouverture d'une sockfdet
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    // creation adresse de la machine distante
-    memset(&serveraddr, '\0', sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;
-    serveraddr.sin_port = htons(PORT);
-    inet_aton("127.0.0.1", &serveraddr.sin_addr);
-
-    // on demande un connection sur l'adresse distante
-    connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
-
-    return sockfd;
-}
-
-int createsendmessage(int sockfd, const int serverfield[SIZE][SIZE], const int clientfield[SIZE][SIZE], const int isend, const char *message) {
-    // create and send message to server
-    struct MESSAGE messagesend = createmessage(serverfield, clientfield, isend, message);
-    send(sockfd, &messagesend, MAXDATASIZE, 0);
-    memset(&messagesend, 0, sizeof(messagesend));
-}
 
 int main(int argc, char const *argv[])
 {

@@ -1,6 +1,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#include <string.h>
 #include "../includes/config.h"
 #include "../includes/array.h"
 
