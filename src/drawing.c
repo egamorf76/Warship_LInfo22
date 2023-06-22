@@ -4,35 +4,20 @@
 #include "../includes/math.h"
 #include "../includes/boat.h"
 
-/// @brief String to clear console
-char clear[] = "\e[1;1H\e[2J";
-
-/// @brief String to clear console and print message
-char ownclear[] = "\e[1;1H\e[2J\nYour field :\n\n";
-
-/// @brief String header
-char header[] = "\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
-
-/// @brief String header
-char headerclear[] = "\e[1;1H\e[2J\nUse Z / S / Q / D arrows to move, R to rotate, use ENTER to select and ESC to exit :\n\n   | A B C D E F G H I J\n---|--------------------\n";
-
 /// @brief Get icon from state of a case
 /// @param status State of the case
 /// @return Return a char contains icon
 char geticon(int const status)
 {
     int sta = status;
-    
-    if (sta < -1) {
+
+    if (sta < -1)
+    {
         sta = -1;
     }
     sta++;
-    
-    return ICONS[clamp(sta, 0, strlen(ICONS) - 1)];
-}
 
-void printselected(VECTOR const pos) {
-    printf("\n%c%d\n", ALPHABET[pos.X], pos.Y + 1);
+    return ICONS[clamp(sta, 0, strlen(ICONS) - 1)];
 }
 
 /// @brief Print of all the field
@@ -40,96 +25,111 @@ void printselected(VECTOR const pos) {
 /// @param pos Actual selected position
 void printfieldselection(int const field[SIZE][SIZE], VECTOR const pos)
 {
-    for (int i = 0; i < SIZE; i++) {
-        if (i < 9) {
+    for (int i = 0; i < SIZE; i++)
+    {
+        if (i < 9)
+        {
             printf(" ");
         }
 
         // print row number
-        printf("%d |", i + 1); 
+        printf("%d |", i + 1);
 
-        for (int j = 0; j < SIZE; j++) {
+        for (int j = 0; j < SIZE; j++)
+        {
             printf(" ");
 
-            if ((pos.X) == j && (pos.Y) == i) {
-                //White background at selected position
-                printf("\033[37m\033[47m"); 
+            if ((pos.X) == j && (pos.Y) == i)
+            {
+                // White background at selected position
+                printf("\033[37m\033[47m");
             }
 
-            //print icon
-            if (field[i][j] <= SMALL) {
+            // print icon
+            if (field[i][j] <= SMALL)
+            {
                 printf(" ");
             }
-            else {
+            else
+            {
                 printf("%c", geticon(field[i][j]));
             }
 
-            //Reset background 
-            printf("\033[0m"); 
+            // Reset background
+            printf("\033[0m");
         }
 
-        //Return line
+        // Return line
         printf("\n");
     }
 }
-
 
 /// @brief Draw feild to place boat
 /// @param field 2D array of feild
 /// @param boat Actual selected boat
 void printfieldboat(int const field[SIZE][SIZE], BOAT const boat)
 {
-    for (int i = 0; i < SIZE; i++) {
-        if (i < 9) {
+    for (int i = 0; i < SIZE; i++)
+    {
+        if (i < 9)
+        {
             printf(" ");
         }
 
         // print row number
-        printf("%d |", i + 1); 
+        printf("%d |", i + 1);
 
-        for (int j = 0; j < SIZE; j++) {
+        for (int j = 0; j < SIZE; j++)
+        {
             printf(" ");
 
-            if (isboatplace(boat, j, i) == 1) {
-                //White background at selected position
-                printf("\033[37m\033[47m"); 
+            if (isboatplace(boat, j, i) == 1)
+            {
+                // White background at selected position
+                printf("\033[37m\033[47m");
             }
 
-            //print icon
+            // print icon
             printf("%c", geticon(field[i][j]));
 
-            //Reset background 
-            printf("\033[0m"); 
+            // Reset background
+            printf("\033[0m");
         }
 
-        //Return line
+        // Return line
         printf("\n");
     }
 }
 
 /// @brief Draw own feild
+/// @param fieldstr The string going to be update
 /// @param field 2D array of feild
 /// @param boat Actual selected boat
-void printownfield(int const field[SIZE][SIZE], char message[])
+void printownfield(char *fieldstr, int const field[SIZE][SIZE], char *message)
 {
-    printf("%s", message);
+    strcat(fieldstr, message);
 
-    for (int i = 0; i < SIZE; i++) {
-        if (i < 9) {
-            printf(" ");
+    for (int i = 0; i < SIZE; i++)
+    {
+        if (i < 9)
+        {
+            strcat(fieldstr, " ");
         }
 
         // print row number
-        printf("%d |", i + 1); 
+        char row[36];
+        sprintf(row, "%d |", i + 1);
 
-        for (int j = 0; j < SIZE; j++) {
-            printf(" ");
-
-            //print icon
-            printf("%c", geticon(field[i][j]));
+        for (int j = 0; j < SIZE; j++)
+        {
+            // print icon
+            char val[3];
+            sprintf(val, " %c", geticon(field[i][j]));
+            strcat(row, val);
         }
 
-        //Return line
-        printf("\n");
+        // Return line
+        strcat(row, "\n");
+        strcat(fieldstr, row);
     }
 }
