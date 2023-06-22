@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
     int clientfield[SIZE][SIZE];
     int serverfield[SIZE][SIZE];
     struct MESSAGE messagerecv;
+    char currentmessage[MESSAGESIZE];
 
     buildarrays(clientfield, EMPTY);
     placeboats(clientfield, clientboats);
@@ -23,13 +24,12 @@ int main(int argc, char const *argv[])
     recv(sockfd, &buffer, sizeof(buffer), 0);
     memcpy(&messagerecv, buffer, sizeof messagerecv);
 
-    printf("Client : %s\n", messagerecv.message);
     copyarray(serverfield, messagerecv.serverfield);
 
     memset(&buffer, 0, sizeof(buffer));
-    memset(&messagerecv, 0, sizeof(messagerecv));
-
-    createsendmessage(sockfd, serverfield, clientfield, 0, "Client send field");
+    
+    strncpy(currentmessage, "\nClient : fields sent\n", sizeof currentmessage);
+    createsendmessage(sockfd, serverfield, clientfield, 0, currentmessage);
 
     while (1) {
         // recevied and read message from server
@@ -38,7 +38,6 @@ int main(int argc, char const *argv[])
 
         copyarray(serverfield, messagerecv.serverfield);
         copyarray(clientfield, messagerecv.clientfield);
-        printf("Client : %s\n", messagerecv.message);
 
         // quit if client win
         if (messagerecv.isend == 1) {
@@ -46,21 +45,23 @@ int main(int argc, char const *argv[])
         }
 
         memset(&buffer, 0, sizeof(buffer));
-        memset(&messagerecv, 0, sizeof(messagerecv));
 
         // fin ?
-        if (isend(clientfield, clientboats) == 1) {
-            createsendmessage(sockfd, serverfield, clientfield, 1, "Server win");
-            printf("Server win");
+        strncpy(currentmessage, "\nClient : played\n", sizeof currentmessage);
+
+        if (isend(clientfield, clientboats, currentmessage) == 1) {
+            strncpy(currentmessage, "\nClient : Server win\n", sizeof currentmessage);
+            createsendmessage(sockfd, serverfield, clientfield, 1, currentmessage);
+            printf("%s", currentmessage);
             return 1;
         }
 
         // client joue un tour
-        if (playround(clientfield, serverfield) != 1) {
+        if (playround(clientfield, serverfield, currentmessage, messagerecv.message) != 1) {
             return 0;
         }
 
-        createsendmessage(sockfd, serverfield, clientfield, 0, "Client played");
+        createsendmessage(sockfd, serverfield, clientfield, 0, currentmessage);
     }
 
     close(sockfd);
