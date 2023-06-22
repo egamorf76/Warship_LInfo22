@@ -47,7 +47,7 @@ int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
 /// @return -1 for exit, 0 for error else 1
 int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
 {
-    char message[360];
+    char message[512];
     printownfield(message, ownfield, ownclear);
     strcat(message, header);
     int res = hit(otherfield, selectposition(otherfield, message, ""));
