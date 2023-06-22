@@ -45,12 +45,13 @@ int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
 /// @param ownfield your field
 /// @param otherfield the oponent field
 /// @return -1 for exit, 0 for error else 1
-int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
+int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], char *headmessage, char *tailmessage)
 {
     char message[700];
     printownfield(message, ownfield, ownclear);
+    strcat(message, headmessage);
     strcat(message, header);
-    int res = hit(otherfield, selectposition(otherfield, message, ""));
+    int res = hit(otherfield, selectposition(otherfield, message, tailmessage));
     memset(message, 0, sizeof message);
 
     return res;
@@ -60,12 +61,12 @@ int playroundnoretry(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
 /// @param ownfield your field
 /// @param otherfield the oponent field
 /// @return -1 for exit, 0 for error else 1
-int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE])
+int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], char *headmessage, char *tailmessage)
 {
     int res;
     do
     {
-        res = playroundnoretry(ownfield, otherfield);
+        res = playroundnoretry(ownfield, otherfield, headmessage, tailmessage);
         
         if (res == -1)
         {
@@ -83,7 +84,7 @@ int start(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], const BOAT other
 {
     while (isend(otherfield, otherboats) != 1)
     {   
-        playround(ownfield, otherfield);
+        playround(ownfield, otherfield, headerclear, "");
     }
     return 1;
 }

@@ -14,6 +14,7 @@ int main(int argc, char const *argv[])
     int serverfield[SIZE][SIZE];
     int clientfield[SIZE][SIZE];
     struct MESSAGE messagerecv;
+    char currentmessage[MESSAGESIZE];
 
     buildarrays(serverfield, EMPTY);
     placeboats(serverfield, serverboats);
@@ -21,26 +22,26 @@ int main(int argc, char const *argv[])
     struct SOCKETFDS socks = createsocket();
 
     // create and send message to server
-    createsendmessage(socks.clientfd, serverfield, clientfield, 1, "Server send field");
+    strncpy(currentmessage, "\nServer : fields sent\n", sizeof currentmessage);
+    createsendmessage(socks.clientfd, serverfield, clientfield, 0, currentmessage);
 
     // recevied and read message from server
     recv(socks.clientfd, &buffer, sizeof(buffer), 0);
     memcpy(&messagerecv, buffer, sizeof messagerecv);
 
-    printf("Server : %s\n", messagerecv.message);
     copyarray(clientfield, messagerecv.clientfield);
 
     memset(&buffer, 0, sizeof(buffer));
-    memset(&messagerecv, 0, sizeof(messagerecv));
 
     while (1) {
         // serveur joue un tour
-        if (playround(serverfield, clientfield) != 1) {
+        if (playround(serverfield, clientfield, currentmessage, messagerecv.message) != 1) {
             return 0;
         }
 
         // create and send message to server
-        createsendmessage(socks.clientfd, serverfield, clientfield, 0, "Server played");
+        strncpy(currentmessage, "\nServer : played\n", sizeof currentmessage);
+        createsendmessage(socks.clientfd, serverfield, clientfield, 0, currentmessage);
 
         // recevied and read message from server
         read(socks.clientfd, &buffer, sizeof(buffer));
@@ -48,19 +49,18 @@ int main(int argc, char const *argv[])
 
         copyarray(serverfield, messagerecv.serverfield);
         copyarray(clientfield, messagerecv.clientfield);
-        printf("Server : %s\n", messagerecv.message);
 
         if (messagerecv.isend == 1) {
             return 1;
         }
 
         memset(&buffer, 0, sizeof(buffer));
-        memset(&messagerecv, 0, sizeof(messagerecv));
 
         // fin ?
         if (isend(serverfield, serverboats) == 1) {
-            createsendmessage(socks.clientfd, serverfield, clientfield, 0, "Client win");
-            printf("Client win");
+            strncpy(currentmessage, "\nServer : Client win\n", sizeof currentmessage);
+            createsendmessage(socks.clientfd, serverfield, clientfield, 1, currentmessage);
+            printf("%s", currentmessage);
             return 1;
         }
     }
