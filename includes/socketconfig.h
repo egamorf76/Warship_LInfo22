@@ -55,7 +55,7 @@ int connectsocket() {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     // creation adresse de la machine distante
-    memset(&serveraddr, '\0', sizeof(serveraddr));
+    memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(PORT);
     inet_aton("127.0.0.1", &serveraddr.sin_addr);
