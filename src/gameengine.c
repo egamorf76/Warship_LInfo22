@@ -1,4 +1,6 @@
 #pragma once
+#include <string.h>
+#include <stdio.h>
 #include "../includes/array.h"
 #include "../includes/config.h"
 #include "actions.c"
@@ -9,18 +11,26 @@
 /// @param field the actual field
 /// @param boats all the boats
 /// @return if end 1 else 0
-int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats]) 
+int isend(const int field[SIZE][SIZE], const BOAT boats[number_boats], char *msg) 
 {
+    int isend = 1;
     for (size_t i = 0; i < number_boats; i++)
     {
         int res = isboatis(field, boats[i], HIT);
         if (res == 0)
         {
-            return 0;
+            isend = 0;
+        }
+        else 
+        {
+            char str[28];
+            sprintf(str, "\nBoat of length %d sunk\n", res);
+            strcat(msg, str);
+            memset(str, 0, sizeof str);
         }
     }
 
-    return 1;
+    return isend;
 }
 
 int placeboats(int field[SIZE][SIZE], BOAT boats[number_boats])
@@ -75,16 +85,5 @@ int playround(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], char *headme
     } 
     while (res != HIT && res != MISSED);
 
-    return 1;
-}
-
-/// @brief Start game
-/// @return -1 to exit, 0 if error else 1
-int start(int ownfield[SIZE][SIZE], int otherfield[SIZE][SIZE], const BOAT otherboats[number_boats]) 
-{
-    while (isend(otherfield, otherboats) != 1)
-    {   
-        playround(ownfield, otherfield, headerclear, "");
-    }
     return 1;
 }

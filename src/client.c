@@ -47,7 +47,9 @@ int main(int argc, char const *argv[])
         memset(&buffer, 0, sizeof(buffer));
 
         // fin ?
-        if (isend(clientfield, clientboats) == 1) {
+        strncpy(currentmessage, "\nClient : played\n", sizeof currentmessage);
+
+        if (isend(clientfield, clientboats, currentmessage) == 1) {
             strncpy(currentmessage, "\nClient : Server win\n", sizeof currentmessage);
             createsendmessage(sockfd, serverfield, clientfield, 1, currentmessage);
             printf("%s", currentmessage);
@@ -59,7 +61,6 @@ int main(int argc, char const *argv[])
             return 0;
         }
 
-        strncpy(currentmessage, "\nClient : played\n", sizeof currentmessage);
         createsendmessage(sockfd, serverfield, clientfield, 0, currentmessage);
     }
 

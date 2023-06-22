@@ -40,7 +40,6 @@ int main(int argc, char const *argv[])
         }
 
         // create and send message to server
-        strncpy(currentmessage, "\nServer : played\n", sizeof currentmessage);
         createsendmessage(socks.clientfd, serverfield, clientfield, 0, currentmessage);
 
         // recevied and read message from server
@@ -57,7 +56,9 @@ int main(int argc, char const *argv[])
         memset(&buffer, 0, sizeof(buffer));
 
         // fin ?
-        if (isend(serverfield, serverboats) == 1) {
+        strncpy(currentmessage, "\nServer : played\n", sizeof currentmessage);
+
+        if (isend(serverfield, serverboats, currentmessage) == 1) {
             strncpy(currentmessage, "\nServer : Client win\n", sizeof currentmessage);
             createsendmessage(socks.clientfd, serverfield, clientfield, 1, currentmessage);
             printf("%s", currentmessage);
